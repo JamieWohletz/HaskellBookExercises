@@ -1,0 +1,8 @@
+1. Mood
+2. Blah or Woot
+3. You're using a data constructor in a type signature, 
+  which is not allowed. You must use the type constructors/name of the type,
+  e.g., changeMood :: Mood -> Mood
+4. 
+  changeMood Blah = Woot 
+  changeMood _ = Blah
