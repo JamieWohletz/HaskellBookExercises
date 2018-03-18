@@ -1,4 +1,4 @@
-import Test.QuickCheck
+import Test.QuickCheck (arbitrary, Arbitrary, choose, CoArbitrary, quickCheck, frequency)
 import Data.Semigroup
 import Data.List.NonEmpty
 
@@ -181,7 +181,25 @@ type CompInt = Comp Int
 compAssoc :: CompInt -> CompInt -> CompInt -> Int -> Bool
 compAssoc a b c x =
   unComp (a <> (b <> c)) x == unComp ((a <> b) <> c) x
-  
+
+-- #11
+
+data Validation a b = Failure a | Success b deriving (Eq, Show)
+
+instance Semigroup a =>
+  Semigroup (Validation a b) where
+    s@(Success b) <> _ = s
+    _ <> s@(Success b) = s
+    (Failure a) <> (Failure b) = Failure $ a <> b
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Validation a b) where
+  arbitrary = frequency
+    [(1, arbitrary >>= (\a -> return $ Failure a)), (1, arbitrary >>= (\b -> return $ Success b))]
+
+type VAssoc = Validation String Int -> Validation String Int -> Validation String Int -> Bool
+
+-- whew, done with the semigroup exercises
+-- I'm sure the monoid exercises will be _much_ easier and less tedious...
 ------
 
 semigroupAssoc :: (Eq m, Semigroup m) => m -> m -> m -> Bool
@@ -199,3 +217,4 @@ main = do
   quickCheck (semigroupAssoc :: OrAssoc)
   quickCheck combineAssoc
   quickCheck compAssoc
+  quickCheck (semigroupAssoc :: VAssoc)

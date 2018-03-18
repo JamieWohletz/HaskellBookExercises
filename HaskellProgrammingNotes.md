@@ -2853,6 +2853,8 @@ data BinaryTree a =
 
 ### 1/3/2018 (Wednesday)
 
+**Pages 452-453.5 (1.5 pages)**
+
 **Chapter 11 exercises (pp.452-460)**
 
 1. a)
@@ -2860,6 +2862,598 @@ data BinaryTree a =
 3. b)
 4. c)
 
+### 1/4/2018 (Thursday)
+
+**Pages 453.5-456.5 (3 pages)**
+
 **Ciphers**
 
 (See `VigenereCipher.hs`.)
+
+Whew.
+
+**As-patterns**
+
+* **As-patterns allow you to reference a deconstructed datatype**. For example, in `list@(x:xs)`, `list` refers to the entire list.
+
+(See `chapter11exercises_asPatterns.hs`.)
+
+**Language exercises**
+
+(See `chapter11exercises_languageExercises.hs`.)
+
+### 1/5-1/7/18 
+
+Rough times.
+
+### 1/8/2018 (Monday)
+
+**Pages 456.5-457.5 (1 page. These exercises are wrecking me!)**
+
+**Phone exercise**
+
+(See `chapter11exerises_phoneExercise.hs`.)
+
+### 1/11/2018 (Thursday)
+
+**Hutton's Razor**
+
+(See `chapter11exercises_huttonsRazor.hs`.)
+
+WHEW.
+
+#### Chapter 11 Definitions
+
+1. A **datatype** is a structured construct for holding information. It can be used as an input and output for a given function. Datatypes consist of _one_ type constructor which appears in type signatures and class instances and _zero or more_ data constructors, each of which take _zero or more_ arguments. Datatype declarations begin with the keyword `data`.
+
+**Stopping point: p.462.**
+
+### 1/12/2018 (Friday)
+
+### Chapter 12: Signaling adversity
+
+* Sometimes, you have a case where there is no reasonable value to return from a function for a given input. Haskell offers some built-in data types to gracefully handle these cases.
+
+#### How I learned to stop worrying and love Nothing
+
+Remember Maybe:
+
+`data Maybe a = Nothing | Just a`
+
+This is included in the Prelude.
+
+You can use this datatype to explicitly return `Nothing` when there is, in fact, nothing to return.
+
+For example:
+
+```
+head :: [a] -> Maybe a
+head [] = Nothing
+head (x:_) = Just x
+```
+
+You can't take the head of an empty list. You _could_ throw an error, but that destroys the runtime safety of our program. The best option? Return Nothing.
+
+**Smart constructors for datatypes**
+
+You can also use Maybe to make, well, smart constructors for datatypes. This is convenient when datatypes don't make sense with certain
+data. The type system alone won't prevent you from constructing an invalid value, which is where the smart constructors come in.
+The smart constructor is just a function which accepts some data and creates a new value of your datatype IF the data meets some criteria. If
+it doesn't, return `Nothing` and be on your merry way!
+
+#### Bleating either
+
+The problem with `Maybe` is that it gives you no context. If you use it to signal that a bad input was given to your function, the consumer of your function doesn't necessarily know _why_ that input was bad. There's another datatype that solves this problem: `Either`. It is defined as follows:
+
+```
+data Either a b = Left a | Right b
+```
+
+* Note: datatypes do _not_ require `Eq` instances to be used in pattern matching or case expressions.
+* When using Either, the convention is to store the error in `Left` or the valid output in `Right`.
+
+**Stopping point: p.470.5**
+
+### 1/13/2018 (Saturday)
+
+* `Either` can, of course, hold a list in its `Left` or `Right` values. Therefore, we can enumerate the reasons a value couldn't be constructed by building up a list of those reasons in `Left` and returning that. This solves the problem of only seeing one error even if there's more than one thing wrong.
+
+#### Kinds, a thousand stars in your types
+
+* **Higher-kinded types** (or _type constructors_) are types which accept other types as arguments. Example: `Either a b`.
+* **Type constants** are types which do not accept any arguments. Example: `Bool`.
+
+**Lifted and unlifted types**
+
+* "The kind `*` is the kind of all standard _lifted types_".
+* The kind `#` is the kind of all standard _unlifted types_.
+* **Lifted types** are those which may contain _bottom_. Lifted types are represented by a pointer.
+* **Unlifted types** are those which _cannot_ contain _bottom_. These are usually native machine types and "raw pointers", which are pointers that directly address memory.
+* Note: the **default kind of concrete, fully-applied datatypes is `*`** (lifted type).
+* The List type has a kind of `* -> *`. The only thing that's special about it is the bracket syntax which lets you do things like `[Int]` and `[5]`.
+
+**Data constructors are functions**
+
+* Data constructors with an arity (number of args accepted) of 1 or more behave very similarly to normal Haskell functions. They are even curried like functions, and their arguments are typechecked according to their definitions. For example, you can't pass a String to a data constructor with the type `Int -> Example`.
+* Nullary data constructors (ones that don't take any args) are _not_ like functions.
+
+**Stopping point: p.478.5**
+
+### 1/14/2018 (Sunday)
+
+* If you derive a `Show` instance for a datatype with a fully polymorphic type variable, the derived instance will ensure that whatever the variable is has a Show instance so it can be shown along with the data constructor it inhabits.
+* You cannot hide polymorphic types from your type constructor in a datatype declaration. For example, you _cannot_ do `data Example = Example a`. You need to do `data Example a = Example a`.
+* Remember, data constructors that accept arguments are very much like functions! You can even map them over a list: `fmap Just [1,2,3]`.
+
+**Stopping point: p.480**
+
+### 1/15/2018 (Monday)
+
+**Chapter 12 Exercises**
+
+All exercises for this chapter can be found in the `chapter12/exercises` folder.
+
+Each section has a file associated with it which is named after it, for example, `determineTheKinds.hs`.
+
+**Stopping point: p.484.5 (#4)**
+
+### 1/16/2018 (Tuesday)
+
+* **Anamorphisms** are the opposite of catamorphisms: they _build up_ data structures.
+
+**Stopping point: p.487**
+
+### 1/17/2018 (Wednesday)
+
+**Stopping point: p.489.5 ("Finally something other than a list!")**
+
+### 1/18/2018 (Thursday)
+
+#### Chapter 12 Definitions
+
+* A **higher-kinded type** is any type which accepts arguments (in other words, any type which is a type _constructor_, not a type _constant_).
+
+Woot woot! Another chapter down.
+
+### Chapter 13: Building projects
+
+**Stopping point: p.494.5 ("Making packages with Stack")**
+
+### 1/19/2018 (Friday)
+
+#### Making packages with Stack
+
+* The Haskell Cabal is a package manager.
+* Packages are programs, including their modules and dependencies.
+* Stack is a cross-platform program for developing Haskell projects. It can be used to manage projects made up of one or more packages.
+* Stack is built on top of Cabal.
+
+#### Working with a basic project
+
+**Stopping point: p.495.5**
+
+### 1/20/2018 (Saturday)
+
+* The `stack.yaml` file specifies dependency versions and what version of GHC they'll work best with.
+* The `stack.yaml` file also specifies an LTS snapshot, which is a snapshot of a GHC version and Haskell packages on Stackage that are guaranteed to work together.
+* Running `stack ghci` in a stack project allows you to both load in your project code and to use your project's dependencies.
+
+**stack exec**
+
+* You can use `stack exec` to execute a binary built by Stack in a project.
+
+**Executable stanzas in Cabal files**
+
+* Stack will create executables based on your cabal file. You can add an "executable stanza" to your cabal file which looks like this:
+
+```
+ executable hello
+    hs-source-dirs:      src
+    main-is:             Main.hs
+    default-language:    Haskell2010
+    build-depends:       base >= 4.7 && < 5
+```
+
+In the above config, `hello` is the name of the executable.
+The `build-depends` line is where you specify your project's dependencies. In this example, the only dependency is the base library.
+
+* Note: module names must match filenames. The compiler expects your program to be run from a Main module in a Main.hs file.
+* Specifying an executable makes sense if you want your project to be run as a typical computer program. If you want your project to be used as a library, you need to add a _library stanza_, which allows you to specify which modules you want to expose from your library.
+
+#### Making our project a library
+
+This is what a library stanza in a cabal file looks like:
+
+```
+library
+  hs-source-dirs:      src
+  exposed-modules:     Hello
+  build-depends:       base >= 4.7 && < 5
+  default-language:    Haskell2010
+```
+
+### Module exports
+
+* By default, when you don't explicitly specify exports for a module, it will export every top-level binding. When you import that module (without specifying an import list), all those bindings will come into scope.
+
+Export lists look like this:
+
+```
+module Foo (func1, func2, func3, ...) where
+```
+
+Note that it is possible to have _empty_ export lists.
+
+**Stopping point: p.501 ("Exposing modules")**
+
+### 1/21/2018 (Sunday)
+
+**Exposing modules**
+
+#### More on importing modules
+
+* Order of imports does not matter
+* The `:browse` command in GHCi allows you to view what functions are available for a given named module. Example: `:browse Data.Bool`
+* You can enable language extensions in GHCi by using the `--ghci-options` parameter. Example: `stack ghci --ghci-options -XNoImplicitPrelude`
+* You can **selectively import things from modules** by using the following syntax: `import ModuleName (func1, func2, ...)`.
+
+**Qualified imports**
+
+**Qualified imports** give you a way to import the entities in a module under a specific name.  
+Examples:
+
+`import qualified Data.Bool` <-- now you must reference entities in Data.Bool by prefixing them with `Data.Bool.`, for example: `Data.Bool.bool`.
+
+`import qualified Data.Bool as B` <-- now you must prefix entities from Data.Bool with `B.`, like `B.bool`.
+
+* **Imports must appear at the top of your module, before any application code**.
+
+**Setting the Prelude prompt**
+
+* Remember, you can use `:set` to set the prompt to whatever you want.
+
+**Intermission: Check your understanding**
+
+1. `forever`, `when`
+2. `Data.Bits`, `Database.Blacktip.Types`
+3. Datatype declarations.
+4. a) `MV`: `Control.Concurrent.MVar`, `FPC`: `Filesystem.Path.CurrentOS`, `CC`: `Control.Concurrent`. b) `Filesystem`. c) `Control.Monad`
+
+#### Making our program interactive
+
+* `do` syntax is syntactic sugar for sequencing monadic actions.
+* The left arrow `<-` in `do` blocks is pronounced "bind."
+
+#### do syntax and IO
+
+**Stopping point: p.511**
+
+* The `main` executable function in a Haskell program must _always_ have the type `IO ()`.
+* In `do` blocks, the `<-` binds a name to the `a` in the `m a` returned by some function. In `m a`, `m` is a _monadic structure_, and `a` is the thing that inhabits it. For example, in `str <- getLine`, we're binding the name `str` to the `String` value in the `IO String` returned by `getLine`. Note that nothing is mutated here. Data is immutable in Haskell.
+
+**return**
+
+* The **return** function wraps a value in a monadic structure and returns it. For example, if you are in a `do` block of a function whose return value is `IO String`, then you could return a string wrapped in `IO` with `return "MyString"`.
+* It is generally considered bad style to use `do` notation for single-line expressions. There is an alternative (>>=) to using `do` that you will learn about in a later chapter.
+
+#### Hangman game
+
+**Stopping point: p.516**
+
+### 1/23/2018 - break day
+
+### 1/24/2018 (Wednesday)
+
+#### Step One: Importing modules
+
+* You can assert the type of a function the same way you would anything else. For example: `> all :: (a -> Bool) -> Maybe a -> Bool` forces `all` to have the given type. There are limits to this, obviously. You can't assert a completely different type than what the compiler expects the function to have, but you _can_ narrow the type down.
+* The `base` library that comes with your GHC install includes several different libraries, including the Prelude, Data.List, Control.Monad, and more.
+* You can use the `exitSuccess` function to exit a program successfully.
+* The `forever` function executes a function infinitely until the program is terminated in some way.
+* The `randomRIO` function from `System.Random` can be used to select a random number within a specified range.
+
+#### Step Two: Generating a word list
+
+(See `hangman/src/Main.hs`)
+
+**Stopping point: p.522.5 ("Step Three: Making a puzzle")**
+
+### 1/27/2018 (Friday)
+
+Break day.
+
+### 1/28/2018 (Saturday)
+
+#### Step Three: Making a puzzle
+
+(See `hangman/src/Main.hs`)
+
+**Stopping point: p.523.5**... :(
+
+### 2/3/2018 (Saturday)
+
+**Stopping point: p.529**
+
+### 2/4/2018 (Sunday)
+
+**Stopping point: p.532 ("Modifying code")**
+
+### 2/12/2018 (Monday)
+
+**Modifying code**
+
+Number 1: 
+
+(See `cipher.hs` for cipher exercise modifications)
+
+Number 2:
+
+(See `chapter13/palindromeIO.hs`)
+
+Number 3:
+
+(See `chapter13/palindromeIO.hs`)
+
+Number 4:
+
+(See `chapter13/gimmePerson.hs`)
+
+Done with chapter 13! At long last! Woo!
+
+**Stopping point: p.536**
+
+### 2/14/2018 (Wednesday)
+
+### Chapter 15: Monoid, Semigroup
+
+* An **algebra** is a set of operations and the set of data they operate over.
+* In Haskell, we can implement algebras with typeclasses; the typeclass defines the operations, and the instances define what _type_ of data can be operated over.
+* Remember, a type is just a set of values.
+
+#### Monoid
+
+* **A monoid is a binary associative operation with an identity.**
+* An **identity** value is a value which, when combined with another value, produces the other value. In the case of addition, the identity value is 0: n + 0 = n.
+* **Associativity** for a given operation means that the order in which the operation is performed can be changed without changing the result of the operation. The order of the _operands_ must stay constant.
+* The **Monoid typeclass** provides an identity value and a binary associative operation, just like monoids do.
+
+#### How Monoid is defined in Haskell
+
+* Examples of Monoids: Integers under addition and multiplication, lists under concatenation.
+
+The Monoid typeclass is defined in Haskell as follows:
+
+```
+class Monoid m where
+  mempty :: m
+  mappend :: m -> m -> m
+  mconcat :: [m] -> m
+  mconcat = foldr mappend mempty
+```
+
+#### Examples of using Monoid
+
+**List**
+
+* Lists under concatenation are a good example of a Monoid. Look: `mappend [1, 2, 3] [4, 5, 6]` => `[1, 2, 3, 4, 5, 6]`.
+
+**Stopping point: p.586.5**
+
+### 2/19/2018
+
+#### Why Integer doesn't have a Monoid
+
+* Numbers don't have a `Monoid` instance because both addition and multiplication form monoids. Since a given type can only have one Monoid typeclass instance, and it's not clear which monoid to use, numbers have _no_ Monoid instance.
+* There are, however, `Sum` and `Product` newtypes in the `Data.Monoid` module which wrap numbers and have appropriate Monoid instances.
+* Several types, including list, have multiple possible monoids. In these cases, newtypes are used so the unique typeclass instance rule is enforced.
+* Remember, a type isn't a monoid; **a type under an operation forms a monoid**. For example, _integers under addition form a monoid_.
+
+**Why newtype?**
+
+* The runtime representation of a newtype and the type it wraps are identical. There is no overhead, like there is with `data`-defined types.
+
+Three reasons to use `newtype`:
+1. Signaling intent; newtypes may _only_ wrap a single type and cannot grow into larger, more complex types.
+2. Safety: they cannot be used interchangably like type aliases.
+3. To add different typeclass instances to a type that is unchanged otherwise.
+
+**More on Sum and Product**
+
+* **There is an infix operator for `mappend`: `(<>)`**.
+
+#### Why bother?
+
+* Knowing about monoiads helps you recognize monoidal patterns.
+* Providing a law-abiding typeclass means you can safely perform monoidal operations on types with instances for it.
+* Monoids can be a useful abstraction for parallel data processing, especially if they're Abelian monoids.
+* The **Abelian** monoid is a **commutative monoid**. This monoid guarantees that the results of the monoidal operation will not change based on the ordering of the operands.
+
+#### Laws
+
+* Algebras are defined by their laws.
+* Laws provide us guarantees that give our programs strong, safe foundations.
+* When the building blocks in our program are based on undeniable laws, our whole program becomes more stable as a result.
+
+Monoid instances must adhere to the following laws:
+
+1. Left identity
+2. Right identity
+3. Associativity
+4. `mconcat = foldr mappend mempty`
+
+**Stopping point: p.594.5**
+
+### 2/22/2018 (Thursday)
+
+#### Different instance, same representation
+
+Bool has multiple possible monoids. These are represented by the `All` and `Any` newtypes.
+* `All` is for logical conjunction (AND)
+* `Any` is for logical disjunction (OR)
+
+`Maybe` also has multiple monoids represented as newtypes:
+* `First` returns the leftmost non-Nothing value.
+* `Last` returns the rightmost non-Nothing value.
+
+#### Reusing algebras by asking for algebras
+
+* It is necessary to require a Monoid instance for types inhabiting a larger type if you want to write a "combining" Monoid instance.
+* However, the typechecker does not require you to have a Monoid instance for phantom types, i.e., type arguments which are never used on the right side of the data declaration.
+* `Maybe` has a third monoid, which is like "Maybe concatenation", and it requires that the value in the `Maybe` have a Monoid instance too. Something like `instance Monoid a => Monoid (Maybe a) where ...`
+
+**Exercise: Optional Monoid**
+
+(See `chapter15/src/optionalMonoid.hs`)
+
+---
+
+**Associativity**
+
+* **Assossiativity** means that you can group/parenthesis the arguments of an operation different and the result will be the same. For example: `1 + (2 + 3)` == `(1 + 2) + 3`. Changing the grouping of the arguments is called **reassociation**.
+* An operation is **commutative** when you can _re-order_ the arguments are the result stays the same. Addition is also commutative: `1 + 2 + 3` == `3 + 1 + 2`.
+* An operation that is commutative is said to _commute_.
+* Commutativity is useful when you don't want order to matter. Distributed systems, for example, use commutative monoids to ensure that the order of evaluation of their operation doesn't matter.
+
+**Identity**
+
+* The **identity value** for a given monoid turns its binary operation into the identity _function_. For example: 1 + 0 == id 1.
+* There **cannot be an identity value without an operation**. The concept of an "identity value" hinges upon a relationship with a specific operation. You can say "0 is the identity value _for addition_", but it wouldn't make sense to say "0 is the identity value".
+
+Remember the laws for the binary monoidal operation:
+1. It must be associative.
+2. It must have an identity value.
+
+**The problem of orphan instances**
+
+* **Orphan instances** are typeclass instances which are defined outside the modules where the typeclass and the type were written.
+* Orphan instances **should be avoided at all costs!** Use newtypes if you don't own the datatype or the typeclass. If you own the datatype, write your typeclass instance in the same module as the type is defined. If you own the typeclass but not the datatype, write your instances in the same file as the typeclass is defined.
+
+**Stopping point: p.604.5 ("Madness")**
+
+### 2/26/2018 (Monday)
+
+(See `chapter15/src/madness.hs`)
+
+#### Better living through QuickCheck
+
+* Since proving laws is difficult, we can use QuickCheck to find out if our code _probably_ obeys a given set of laws.
+* In a nutshell, **QuickCheck is useful for testing that a given piece of code adheres to some constraints for arbitrary data.**
+
+**Validating associativity with QuickCheck**
+
+* It's possible to **bind infix names for function arguments**. Example: `myFunc (<>) a b = a <> b`
+
+**Testing QuickCheck's patience**
+
+etc etc etc.
+
+**Exercise: Maybe Another Monoid**
+
+(See `chapter15/src/maybeAnotherMonoid.hs`)
+
+#### Semigroup
+
+* A **Semigroup** is a type with an associative binary operation. Semigroups are similar to Monoids except they have **no identity value**.
+* Semigroup is part of `base` but not `Prelude`. It defines its own version of `(<>)` so be careful when importing it and Monoid into the same module.
+
+**Stopping point: p.613.5 ("NonEmpty, a useful datatype")**
+
+### 2/27/2018 (Tuesday)
+
+**NonEmpty, a useful datatype**
+
+* **NonEmpty** is a list that cannot be empty.
+* NonEmpty has a Semigroup instance but not a Monoid instance.
+* Data constructors that **begin with a colon** and have only **nonalphanumeric characters** are **infix data constructors**.
+* An Infix data constructor may not be used as a prefix, and a prefix data constructor may not be used as an infix.
+
+#### Strength can be weakness
+
+* The **strength** of an algebra is how many operations the algebra provides. 
+* The greater the number of operations an algebra provides, the more you can do with an instance of that algebra without needing to know what type you're working with.
+* The stronger an algebra is, though, the more unlikely it is a given datatype meets all the requirements to work with those operations. Therefore, it is often better to define weaker algebras which can be used separately or composed to form a stronger one. Why? Cases like NonEmpty. You want to be able to concatenate NonEmptys, but it's not a Monoid because it doesn't have an identity. Therefore, it is a semigroup and has a weaker algebra.
+* Monoid is stronger than Semigroup because it exposes a strict superset of the operations Semigroup exposes.
+* Remember, the more you can _do_ with a set of values, the fewer _types_ those values may inhabit.
+
+#### Chapter 15 exercises
+
+**Semigroup exercises**
+
+See `chapter15/src/semigroupExercises.hs`
+
+**Stopping point: p.618.5 (#4)**
+
+### 2/28/2018 (Wednesday)
+
+**Stopping point: p.619.9 (#9)**
+
+* Rule of thumb for pattern matching: **anywhere you bind variables, you can pattern match**. This includes `let` and `where`! Examples:
+
+```
+-- let
+let (x:xs) = [1, 2, 3, 4]
+in ...
+
+-- where
+...
+where
+  (x:xs) = [1, 2, 3, 4]
+```
+
+#### Chapter 15 Definitions
+
+* A **monoid** is a "set that is closed under an associative binary operation and has an identity element."
+* When a set is **closed** under some operation, that operation always accepts arguments and returns a result in the same set.
+* A **semigroup** is a set closed under an associative binary operation.
+* **Laws** are rules which a given algebra must obey.
+* An **algebra in Haskell-land** is (usually) a _type_ and one or more _operations_ that operate on that type and follow some _laws_.
+
+### Chapter 16: Functor
+
+#### What's a functor?
+
+* A **functor** is a way to apply a function to the value(s) in a structure so that the structure remains unchanged but the value(s) is/are updated. This is called "mapping" a function over a structure.
+* The `Functor` typeclass generalizes this mapping operation.
+
+The Functor typeclass is defined as follows:
+
+```
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+```
+
+(Note that the `f` in the above is the _same_ `f` everywhere in the definition. It represents a type that implements the Functor typeclass.)
+
+#### There's a lot of fmap goin' round
+
+* You can use the `XTypeApplications` extension in GHCi like so: `:set -XTypeApplications`. This extension allows you to do... things.
+
+#### Let's talk about f, baby
+
+* The `f` in the Functor typeclass definition has the kind `* -> *`.
+* **Each argument in the type signature for a function _must_ be a fully-applied and inhabitable type**, i.e., it must have the kind `*`.
+
+**Shining star come into view**
+
+* We know each argument in a function type signature must be of kind `*` because of the kind of the function type constructor: `(->) :: * -> * -> *`.
+
+**Exercises: Be Kind (p.634)**
+
+1. `*`
+2. `b`: `* -> *`; `T`: `* -> *`
+3. `* -> * -> *`
+
+---
+
+**A shining star for you to see**
+
+* Because of the way the typeclass is defined, **type constants cannot be functors**. (It wouldn't make sense for them to be anyway.) Therefore, you can't make a Functor instance for Bool because its kind is `*` -- but you _can_ make an instance for `Maybe` since its kind is `* -> *`.
+* A Functor instance for a type constant is just function application!
+
+**Functor is function application**
+
+* There is an **infix operator for fmap**: `<$>`.
+* **Functor provides function application "over" datatypes**! In other words, `fmap` applies a function to some value(s) wrapped in a structure and returns the result of that application, wrapped in the same structure.
+
+**Stopping point: p.637.5 ("A shining star for you to see what your f can truly be")**
+
