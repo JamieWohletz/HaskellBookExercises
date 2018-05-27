@@ -1,4 +1,4 @@
-import Test.QuickCheck (arbitrary, Arbitrary, choose, CoArbitrary, quickCheck, frequency)
+import Test.QuickCheck
 import Data.Semigroup
 import Data.List.NonEmpty
 

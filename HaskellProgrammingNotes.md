@@ -3457,3 +3457,313 @@ class Functor f where
 
 **Stopping point: p.637.5 ("A shining star for you to see what your f can truly be")**
 
+#### Functor Laws
+
+`Functor` instances must abide by the following two laws:
+1. **Identity**: `fmap id == id`. For example: `fmap id [1,2,3] == id [1,2,3]`
+2. **Composition**: `fmap (f . g) == fmap f . fmap g`. For example: `fmap ((subtract 1) . (+2)) [0,0,0] == fmap (subtract 1) . fmap (+2) $ [0,0,0]`
+
+**Structure preservation**
+
+ * **Remember, the Functor operation (`fmap`) PRESERVES STRUCTURE**. `fmap` will never change the structure of a datatype with which it's used.
+
+#### The Good, the Bad, and the Ugly
+
+* When writing a Functor instance, you should leave untouched anything in the datatype that is _not_ the final type argument to the functor `f`. Think of it as being part of the structure that the lifted function should be oblivious to.
+
+#### Commonly used functors
+
+Holy cow. There's a Functor instance for functions! It's the same as function composition.
+
+**The functors are stacked and that's a fact**
+
+* You can **compose fmap**! For example, you could do something like this: `(fmap . fmap) f nestedFunctors`, assuming `nestedFunctors` is a Functor within a Functor. Functorception! You can do it n layers deep. :mindblown:
+
+**Stopping point: page 650 ("Wait, how does that even typecheck?")**
+
+**Exercises: Heavy Lifting (p.656-657)**
+
+(See `chapter16/src/heavyLifting.hs`)
+
+---
+
+#### Transforming the unapplied type argument
+
+* Remember, you can partially apply type constructors to reduce their kindedness. For example, `:k Either` has kind `* -> * -> *`, but `:k Either Int` has kind `* -> *`.
+* You can partially apply type constructors to type variables in instance declarations so you don't have to use a concrete type.
+For example: `instance Functor (Either a) where`. Notice the `a` -- passing this gives us a type of kind `* -> *`, which is what Functor requires.
+* Note that in a Functor typeclass instance for a partially applied type, like `Either a`, you can't touch the `a` in the `fmap` definition. Since `a` corresponds to the `Left` data constructor in Either, that means we can only map over the `Right` data constructor.
+* In summary, the reason you can't `fmap` over both values in a tuple is that tuple has kind `* -> * -> *`, so you need to ignore the first value. This goes for any higher-kinded type with more than one type parameter that you're trying to write a Functor instance for.
+
+**Stopping point: page 660.5 ("QuickChecking Functor instances")**
+
+**Exercises: Instances of Func (p.663)**
+
+(See `chapter16/src/instancesOfFunc.hs`)
+
+#### Ignoring Possibilities
+
+* `Either` and `Maybe` are useful because they allow you to `fmap` in a way that ignores failure cases.
+  Their `fmap` implementations both only map over the success case data constructors.
+
+**Maybe**
+
+**Exercise: Possibly (p.666)**
+
+(See `chapter16/src/possibly.hs`)
+
+**Either**
+
+**Short Exercise (pp.668-669)**
+
+(See `chapter16/src/shortExercise.hs`)
+
+#### A somewhat surprising functor
+
+* Remember, **phantom** type parameters are those which are not referenced anywhere on the right side of a datatype definition.
+* There is a Functor instance which ignores the function parameter to `fmap` for the `Constant` datatype. This is the only possible behavior for `fmap` for `Constant` because the second type parameter is a phantom type. The Functor for `Constant`, then, is virtually pointless, but behaves in a manner consistent with the datatype's functionality.
+
+#### More structure, more functors
+
+It is possible to create a datatype whose Functor instance requires another Functor instance. Check out the following datatype:
+
+```
+data Wrap f a = Wrap (f a) deriving (Eq, Show)
+```
+
+To write a Functor instance for this, `f` must also have a Functor instance so we can apply the function passed to `fmap` to `a`:
+
+```
+instance Functor f => Functor (Wrap f) where
+  fmap f (Wrap fa) = Wrap (fmap f fa)
+```
+
+Interesting, eh?
+
+#### IO Functor
+
+* IO is actually an _abstract datatype_: its implementation is hidden. 
+* In general, **abstract datatypes** are those which leave some or all of their representation undefined or hidden. This can be accomplished with either parameterized types ("weak" abstraction) or the module system, by only exporting the type constructor. See https://wiki.haskell.org/Abstract_data_type for more info.
+* Because IO is an abstract datatype and does not expose any data constructors for us to match on, the only way we can interact with it is through its typeclass instances.
+
+**Stopping point: page 674.**
+
+* GHCi does not print out `IO ()` values.
+* IO has a Functor instance that you can use to `fmap` over it. For example: `fmap (++ " wololo") getLine`
+
+#### What if we want to do something different?
+
+* **Natural transformations** are those which change a _structure_ but not the _value(s)_ it contains.
+Here is a natural tranformation type:
+
+```
+{-# LANGUAGE RankNTypes #-}
+
+type Nat f g = forall a . f a -> g a
+```
+
+The `forall a` bit lets us avoid defining `a` as a type parameter. We don't want `a` to be a type parameter in this case
+because we _only_ care about the structure -- we don't want to mess with the value(s) those structures hold!
+Using this "quantifier", as it is called, ensures that in our functions we _can't_ touch the `a` value, which is true to the
+spirit of natural transformations.
+
+#### Functors are unique to a datatype
+
+* In Haskell, **for a given datatype, only one valid Functor instance exists**. (Compare to Monoids, where there may be multiple possible valid instances and we use newtypes to create separate instances.)
+* We _can_ flip type arguments using the `Flip` newtype: `newtype Flip f a b = Flip (f b a)`. However, this means we are using an entirely different datatype and it can become unwieldy.
+
+#### Chapter 16 exercises
+
+(See `chapter16/src/chapterExercises.hs`)
+
+**Chapter 16 Definitions**
+
+* **Higher-kinded polymorphism** occurs when a type variable is used to represent a higher-kinded type. `Functor` is an example of higher-kinded polymorphism. Look at this snippet of the output for `:info Functor`: `class Functor (f :: * -> *) where`. Notice how `f` represents a higher-kinded type.
+* **Functor** is a mapping between categories. In Haskell, Functor is a typeclass which allows you to transform the values in a structure without affecting the structure itself. Note that there is a Functor instance for functions.
+* **Lifting** is the concept of raising a value into the context of a datatype. For example: `f <$> [1,2,3]` _lifts_ `f` over `[1,2,3]`.
+
+### Chapter 17: Applicative
+
+#### Applicative
+
+* Applicatives are monoidal functors, because they lift functions over datatypes and join datatypes together. This is because they lift a function from one structure to another structure of the same type and apply to the values inhabiting that structure. In the process, the two structures -- both the one holding the function and the one holding values -- are combined.
+
+#### Defining Applicative
+
+* Functor is a superclass of Applicative.
+
+The Applicative typeclass has two primary methods:
+* `pure` - This lifts a value into an Applicative context
+* `(<*>)` - Called "apply", "ap", or "tie fighter", this applies a function in an Applicative to values within an Applicative. It's similar to `fmap`, except that the function itself is also wrapped in the case of `(<*>)`.
+
+#### Functor vs Applicative
+
+* You can actually define a Functor in terms of an Applicative: `fmap f x = pure f <*> x`
+
+#### Applicative functors are monoidal functors
+
+Applicative is monoidal because we have to combine structure. Look at the `(<*>)` type signature:
+
+`(<*>) :: f (a -> b) -> f a -> f b`
+
+Not only do we have to apply `a` to `a -> b`, but we have to return a new value of type `f` which is a combination of the previous two values given (and it has to hold `b`). Monoid gives us this ability: `mappend :: Monoid a => a -> a -> a`, or to make it clearer, `mappend :: Monoid f => f -> f -> f`.
+In this way, Applicative is monoidal as well as functorial.
+
+**Stopping point: p.693**
+
+**Show me the monoids**
+
+`instance Monoid a => Applicative ((,) a)`
+
+The above illustrates that tuples have an Applicative instance which requiers a Monoid instance.
+This is necessary so you can mash the first value of the tuple together when using apply:
+
+`("wolo", (+5)) <*> ("lo", 5)` returns
+`("wololo", 10)`
+
+See how "wolo" and "lo" were combined into one value in the return tuple? This is why the Monoid instance on the first value is necessary.
+We don't need a Monoid instance for the second value because that is produced through function application.
+
+**Tuple Monoid and Applicative side by side**
+
+Why does the tuple Applicative require a Monoid and not just a semigroup, you  might ask? This is why:
+
+`pure x = (mempty, x)`
+
+Monoid provides `mempty` -- if we didn't have that, what would we fill the first slot in the tuple with?
+
+**Maybe Monoid and Applicative**
+
+* The monoidal part of an Applicative instance may not match the behavior of the Monoid instance defined for the same datatype. Remember that there are multiple possible valid monoids for many datatypes.
+
+#### Applicative in use
+
+**List Applicative**
+
+* Type Applications are helpful for specifying types for functions explicitly. https://ghc.haskell.org/trac/ghc/wiki/TypeApplication
+
+**What's the List applicative do?**
+
+The list applicative applies all the functions in one list to the values in another list. The ordering is as follows:
+
+```
+> [(+1), (+2)] <*> [1, 2]
+[(+1) 1, (+1) 2, (+2) 1, (+2) 2]
+[2, 3, 3, 4]
+```
+
+**Stopping point: p.700**
+
+**Exercises: Lookups (pp.702-703)**
+
+(See `chapter17/src/lookups.hs`)
+
+---
+
+**Identity**
+
+**Specializing the types**
+
+The `Identity` type can be useful for wrapping structure in extra structure when you don't want to
+operate upon the original structure. For example:
+
+`const <$> Identity [1,2,3] <*> Identity [9,9,9]` returns `Identity [1,2,3]`
+
+This is how `Identity` is defined:
+
+`newtype Identity a = Identity a`
+
+**Exercise: Identity Instance (pp.704-705)**
+
+(See `chapter17/src/identityInstance.hs`)
+
+**Constant**
+
+The `Constant` datatype is defined like so:
+
+`newtype Constant a b = Constant { getConstant :: a }`
+
+Basically, it throws away its second type parameter.
+
+**Exercise: Constant Instance (p.706)**
+
+(See `chapter17/src/constantInstance.hs`)
+
+---
+
+**Stopping point: p.706 ("Maybe Applicative")**
+
+**Maybe Applicative**
+
+In the case of the Maybe Applicative, we may or may not even have a function to apply. It could be Nothing!
+
+**Specializing the types**
+
+**Using the Maybe Applicative**
+
+You can use the Maybe Applicative in some cool ways. Here's an example:
+
+```
+ok :: Int -> Maybe Int
+ok n = if n < 10 then Just n else Nothing
+
+addIfOk :: Int -> Int -> Maybe Int
+addIfOk n1 n2 = (+) <$> ok n1 <*> ok n2
+```
+
+See that? We can optionally apply functions over Maybes by using fmap and apply without
+having to write any explicit conditional code. Very cool.
+
+**Breaking down that example**
+
+**Maybe Applicative and Person**
+
+**Before we moooove on**
+
+From the book, a good way to tell if you need to use an Applicative is when you find yourself thinking something like:
+
+"I want to do something kinda like an fmap, but my function is embedded in the functorial structure too, not only the value I want to apply my function to."
+
+**Exercise: Fixer Upper (p.721)**
+
+(See `chapter17/src/fixerUpper.hs`)
+
+**Stopping point: p.721 ("Applicative laws")**
+
+#### Applicative laws
+
+Here are the laws for the Applicative typeclass:
+
+1. Identity: `pure id <*> v = v`
+2. Composition: `pure (.) <*> u <*> v <*> w = u <*> (v <*> w)`
+3. Homomorphism (a **homomorphism** is a structure-preserving map between two algebraic structures): `pure f <*> pure x = pure (f x)`
+4. Interchange: `u <*> pure y = pure ($ y) <*> u`
+
+
+**Stopping point: p.726**
+
+#### You knew this was coming
+
+* There is a library that goes with QuickCheck called Checkers. It makes verifying common typeclass laws via property checking easier.
+
+#### ZipList Monoid
+
+The ZipList monoid for lists combines lists differently than the default list monoid.  
+Whereas the list monoid `mappend` concatenates two lists together, the ZipList
+monoid `mappend` combines the actual values together. Example:
+
+```
+["foo", "bar"] `mappend` ["bar", "baz"]
+==
+["foobar", "barbaz"]
+```
+
+**Zero vs. Identity**
+
+There's a difference between "zero" and "identity":
+
+zero: n * 0 == 0
+
+identity: n * 1 == n
+
+**Stopping point: p.733 ("List Applicative Exercise")**                                                               
