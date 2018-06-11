@@ -3767,3 +3767,13 @@ zero: n * 0 == 0
 identity: n * 1 == n
 
 **Stopping point: p.733 ("List Applicative Exercise")**                                                               
+
+**List Applicative Exercise (pp.733-735)**
+
+(See `chapter17/src/listApplicative.hs`)
+
+**ZipList Applicative Exercise (pp.736-737)**
+
+(See `chapter17/src/zipListApplicative.hs`)
+
+**Stopping point: p.737 ("Either and Validation Applicative")**
