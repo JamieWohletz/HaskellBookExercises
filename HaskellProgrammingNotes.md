@@ -3777,3 +3777,686 @@ identity: n * 1 == n
 (See `chapter17/src/zipListApplicative.hs`)
 
 **Stopping point: p.737 ("Either and Validation Applicative")**
+
+**Either and Validation Applicative**
+
+Types for Applicative functions specialized to Either:
+
+```
+(<*>) :: Either e (a -> b) -> Either e a -> Either e b
+pure :: a -> Either e a
+```
+
+**Either versus Validation**
+
+* "Often, the interesting part of an Applicative is the monoid."
+* **Applicative can have more than one valid and lawful instance for a given datatype.** (Functor cannot.)
+
+Here is the Validation datatype definition:
+
+```
+data Validation err a =
+    Failure err
+  | Success a
+  deriving (Eq, Show)
+```
+
+Note that this is _identical_ to the Either datatype. The only reason for it is that it has a different Applicative instance.
+There are a number of functions which can convert between Either and Validation.
+
+* The **Either Applicative throws away everything but the first `Left`, if there is a Left present.**
+* Contrastly, the **Validation Applicative combines the values of the `Failure` data constructors by using their Monoid instance.**
+
+**Exercise: Variations on Either (p.740)**
+
+(See `chapter17/src/variationsOnEither.hs`)
+
+#### Chapter 17 exercises
+
+Specialize the types.
+
+Number 1:
+
+```
+pure :: a -> [a]
+(<*>) :: [(a -> b) -> [a] -> [b]
+```
+
+Number 2:
+
+```
+pure :: a -> IO a
+(<*>) :: IO (a -> b) -> IO a -> IO b
+```
+
+Number 3:
+
+```
+pure :: a -> (,) b a
+(<*>) :: (,) z (a -> b) -> (,) z a -> (,) z b
+```
+
+Number 4:
+
+```
+pure :: a -> (->) e a
+(<*>) :: (->) e (a -> b) -> (->) e a -> (->) e b
+```
+
+Write instances.
+
+(See `chapter17/src/chapterExercises.hs`)
+
+**Stopping point: p.742 ("Combinations")**
+
+#### Chapter 17 Definitions
+
+1. **Applicatives** in Haskell are _monoidal functors_. In a nutshell, Applicatives give you a way to apply functions wrapped in some structure to values wrapped in the same type of structure and produce a new structure which is the combination of the previous two with the newly produced value in it.
+2. **Idiom** is another word for **applicative functor**.
+
+### Chapter 18: Monad
+
+#### Monad
+
+* Monads are not strictly necessary for Haskell. Haskell defines monads; monads do not define Haskell.
+* Monads are applicative functors with a little more zing that makes them more powerful.
+
+#### Sorry -- a monad is not a burrito
+
+* Monads are another way of applying functions over structure.
+
+Here is the definition of the Monad typeclass:
+
+```
+class Applicative m => Monad m where
+  (>>=) :: m a -> (a -> m b) -> m b
+  (>>) :: m a -> m b -> m b
+  return :: a -> m a
+```
+
+Notice that Applicative is a superclass of Monad.
+
+**Applicative m**
+
+* Since Monad is stronger than Applicative, and Applicative is stronger than Functor, you can derive Applicative and Functor using only monadic operations. Check it out, here's functor: `fmap f xs = xs >>= return . f`. This is a law.
+* Here's the class dependency chain: Functor -> Applicative -> Monad
+* When you write an instance of Monad for a type, you _necessarily_ also have an Applicative and a Functor instance for that type.
+
+**Core operations**
+
+* `return` is the same as `pure` from Applicative.
+* `>>` is called "Mr. Pointy" or _the sequencing operator_. It sequences two monadic actions together and discards the resulting value of the first action. Applicative has a similar operator.
+* `>>=` is called _bind_ and is what makes Monad special.
+
+**The novel part of Monad**
+
+* Monad is sort of a generalization of `concat`, except for any monadic structure, not just Foldables wrapping lists.
+
+**The unique part of Monad is this function:**
+
+```
+join :: Monad m => m (m a) -> m a
+```
+
+**Stopping point: p.749 ("It's somewhat novel...")**
+
+**Exercise: Write bind in terms of fmap and join (p.750)**
+
+(See `chapter18/src/fmapJoinBind.hs`)
+
+**What Monad is not**
+
+Don't base your understanding of monads on the IO monad. This can limit your intuitions around what a monad is and what it can do.
+
+A monad is **not**:
+
+* Impure. The IO datatype allows for impurity, but monads themselves are not impure.
+* An embedded language for imperative programming.
+* A value. This is the same for monoids and functors -- they're not values, they're algebras associated with types.
+* About strictness. `bind` and `return` are nonstrict.
+
+You don't have to know math or category theory to use monads.
+
+"The Monad typeclass is generalized structure manipulation with some laws to make it sensible. Just like Functor and Applicative."
+
+**Monad also lifts!**
+
+The `Monad` module includes a set of `lift` functions that are identical in functionality to the ones from `Applicative`. These are preserved for backwards compatibility.
+
+* `liftA` and `liftM` are the same as `fmap`, but with different typeclass constraints (`Applicative` and `Monad`, respectively).
+* `liftA2` and `liftM2` allow you to apply a 2-arity function to values from two structures of the same type.
+* The `zipWith` function is `liftA2` or `liftM2` specialized to the [] type. It uses a different list monoid, so it behaves differently than either of those functions.
+* There are also `liftA3`, `liftM3`, and `zipWith3` functions. Same story. The first two do the same thing, the third behaves differently because it uses a different monoid.
+
+#### Do syntax and monads
+
+The two functions
+
+```
+(*>) :: Applicative f => f a -> f b -> f b
+(>>) :: Monad m => m a -> m b -> m b
+```
+
+are essentially the same, except with different typeclass constraints. They are both used for sequencing.
+
+**Stopping point: p.755 ("When fmap alone isn't enough")**
+
+Doing `putStrLn <$> getLine` will not cause all the effects to be evaluated. Only `getLine` will be evaluated, but `putStrLn` will not. This is because this expression produces the type `IO (IO ())`. To make the expression work, we need to use `join` (which is the unique thing that Monad offers):
+
+```
+join $ putStrLn <$> getLine
+```
+
+IO actions (or any monadic actions) are ordered via the nesting of lambda expressions.
+**Monadic syntax is still built on lambda calculus**. It's simply nested lambdas.
+
+* The side effects of the `IO` type are constrained _to_ the IO type itself.
+
+Here's an example of desugaring `do` syntax:
+
+```
+bindingAndSequencing :: IO ()
+bindingAndSequencing = do
+  putStrLn "name pls:"
+  name <- getLine
+  putStrLn ("y helo thar: " ++ name)
+
+bindingAndSequencing' :: IO ()
+bindingAndSequencing' =
+  putStrLn "name pls:" >>
+  getLine >>=
+  \name ->
+    putStrLn ("y helo thar: " ++ name)
+```
+
+As you can see, `do` syntax allows us to flatten out deep nesting produced by binding multiple variables.
+
+#### Examples of Monad use
+
+**List**
+
+**Specializing the types**
+
+Here's `(>>=)` specialized to the list type:
+
+`(>>=) :: [a] -> (a -> [b]) -> [b]`
+
+and `return`:
+
+`return :: a -> [a]`
+
+**Example of the List Monad in use**
+
+`[1,2,3] >>= (\x -> if even x then [x*x] else [x])`
+
+**Maybe Monad**
+
+**Specializing the types**
+
+**Using the Maybe Monad**
+
+See `chapter18/src/usingTheMaybeMonad.hs`.
+
+**Stopping point: p.764 ("Can we write it with (>>=)?")**
+
+See `chapter18/src/usingTheMaybeMonad.hs`.
+See `chapter18/src/doSomething.hs`.
+
+The following cannot be rewritten using Applicative:
+```
+doSomething' n = do
+  a <- f n
+  b <- g a
+  c <- h b
+  pure (a, b, c)
+```
+The reason for this is because each subsequent calculation relies on a value produced in a previous calculation.
+Monad allows you to create a sort of "value pipeline" like this, but Applicative does not: each calculation stands alone.
+
+**Exploding a spherical cow**
+
+* (>>=) is sort of like a "plunger" that lets you force the value(s) out of their structure and into a function which produces a new structure of the same type with values of a different or the same type.
+
+**Fail fast, like an overfunded startup**
+
+The Maybe Monad implementation of `(>>=)` returns Nothing without evaluating the given function if the first argument is Nothing.
+I.e., `Nothing >>= _ = Nothing`.
+
+You can explicitly write out a chain of Maybe computations identical to a monadic `do` block using `case`s, but it's much cleaner and more concise to use the Monad.
+
+**Either**
+
+**Specializing the types**
+
+Here is how the types of the monadic operations are specialized for Either:
+
+```
+(>>=) :: Either e a -> (a -> Either e b) -> Either e b
+return :: a -> Either e a
+```
+
+**Using the Either Monad**
+
+* The `Either` Monad short-circuits and fails as soon as a `Left` value is encountered.
+* The `Validation` type does not have a Monad instance, because it has a different Applicative instance and the only possible Monad you could write has the same behavior as `Either`'s Monad instance, _which relies on a different Applicative_. Remember, Applicative and Monad must have the same behavior -- you must be able to derive `(<*>)` from `(>>=)`.
+
+**Stopping point: p.776**
+
+**Short Exercise: Either Monad**
+
+(See `chapter18/src/eitherMonad.hs`.)
+
+#### Monad laws
+
+**Identity laws**
+
+Monad has two identity laws:
+
+```
+-- right identity
+m >>= return = m
+
+-- left identity
+return x >>= f = f x
+```
+
+In a nutshell, `return` should not perform any computations.
+
+**Associativity**
+
+```
+(m >>= f) >>= g = m >>= (\x -> f x >>= g)
+```
+
+The reason the right side looks different is because of the left-to-right nature of bind.
+We need to apply `f` to an argument so it produces an `m a` value which can be bound to `g` with `>>=`.
+
+**We're doing that thing again**
+
+We can use the checkers library to validate our Monad instances. Here's an example of how:
+
+```
+quickBatch (monad [(1,2,3)])
+```
+
+This might look familiar -- it's the same way we check Applicative instances (except for the use of the `monad` function, obviously).
+
+**Bad Monads and their denizens**
+
+* It's possible and can be easy to accidentally write an invalid Monad, Applicative, or Functor instance that typechecks but breaks the relevant laws. That's why it's important to use QuickCheck to validate your instances to be sure.
+* Sometimes, you can have a valid Functor and Applicative but not a valid Monad instance.
+* QuickCheck catches invalid instances that do something weird and harmful. That's useful!
+
+#### Application and composition
+
+* Composition "just works" for Functors and Applicatives: `fmap (+1) . fmap (*2) $ [1,1,1] == [3,3,3]`
+
+Monads are composed using the bind operator:
+
+```
+mcomp :: Monad m =>
+         (b -> m c)
+      -> (a -> m b)
+      ->  a -> m c
+mcomp f g a = g a >>= f
+```
+
+**Kleisli composition** allows you to compose monads. The "Kleisli fish" `(>=>)` operator is defined in Control.Monad and has the following type signature:
+
+```
+(>=>) :: Monad m => (a -> m b) -> (b -> m c) -> a -> m c
+```
+
+which is actually just function composition with its arguments flipped and that accounts for monadic structure. Notice the similarity:
+```
+flip (.) ::         (a -> b)   -> (b -> c)   -> a -> c
+```
+
+See page 786 for an example use of Kleisli composition.
+
+#### Chapter 18 Exercises
+
+(See `chapter18/src/chapterExercises.hs`.)
+
+**Stopping point: p.789**
+
+#### Chapter 18 Definitions
+
+* **Monad** is a typeclass that provides two operations: `return` and `(>>=)`. The magic of monad is in `(>>=)`, which you can use to functorially apply a function to produce more structure for every value in a given structure then flatten that nested structure out (using `join` internally).
+* A **monadic function** is one which generates _more_ structure after having been lifted over monadic structure.
+* In the context of Monads, **bind** refers to using the `(>>=)` operator to lift a monadic function over a structure. Outside of a monadic context, bind just means binding variables to values. "Binding over" can mean using `<-` in do-notation or using `(>>=)`.
+
+Woo! Done with chapter 18! :D
+
+### Chapter 19: Applied Structure
+
+This chapter will be a bunch of examples of practical uses of Monoid, Functor, Applicative, and Monad.
+
+#### Monoid
+
+**Templating content in Scotty**
+
+* Scotty is a web framework for Haskell.
+
+**Concatenating connection parameters**
+
+Aditya Bhargava wrote a blogpost called "Making A Website With Haskell" which may be a useful read.
+
+**Concatenating key configurations**
+
+* `xmonad` is a windowing system for X11 written in Haskell.
+* The exclamation point (`!`), when used in type signatures, is a **strictness annotation**. More on those later in the book.
+
+The Monoid of functions looks like this: 
+
+`instance Monoid b => Monoid (a -> b)`
+
+This means that you can `mappend` the results of two function applications, because they share a Monoid instance.
+(It also means that you can mappend unapplied functions together too, like `f <> g`.)
+
+**Stopping point: p.797**
+
+#### Functor
+
+**Lifting over IO**
+
+**Lifting over web app monads**
+
+* When writing web applications, you'll often have a monad which describes the application. This Monad will have a type parameter that describes what result was produced in the course of a running web application.
+
+#### Applicative
+
+Applicative has many uses in parsers.
+
+**hgrev**
+
+**More parsing**
+
+**Stopping point: p.803 ("This one uses `liftA2`...")**
+
+**And now for something different**
+
+You can lift operators over structure as well. Check this out:
+
+```
+(<||>) :: f Bool -> f Bool -> f Bool
+(<||>) = liftA2 (||)
+```
+
+Here are some ways to use it:
+```
+> (Just True) <||> (Just False)
+Just True
+> (\a -> True) <||> (\b -> False) $ 5
+True
+```
+
+Neat, huh?
+
+#### Monad
+
+* In Haskell, effectful programming is constrained to the IO datatype.
+* IO has an instance of Monad, so practical uses of Monad can be found all over the place.
+
+**Opening a network socket**
+
+**Binding over failure in initialization**
+
+#### An end-to-end example: URL shortener
+
+**Stopping point: p.808**
+
+* The `OverloadedStrings` language extension makes string literals polymorphic so they can be Text, String, or ByteString values.
+
+**Brief aside about polymorphic literals**
+
+The way OverloadedStrings works is by using the `IsString` typeclass, which has a `fromString` method, similar to how `Num` has a `fromInteger` method and `Fractional` has `fromRational`.
+
+In a nutshell, GHC treats string literals as being concrete `String`s, but under the hood wraps them in `fromString` calls so they can be polymorphic. (The same is true for integral and fractional literals.)
+
+**Back to the show**
+
+* There are various ways to import things from modules. You can find a full explanation of these ways here: https://wiki.haskell.org/Import.
+* It's good practice to make your imports as explicit as possible, using either qualified (and named) imports and/or specific imports (e.g., `import Foo (x, y)`.
+
+**Exercise (p.820)**
+
+Skipping this exercise because I'm running on a Windows machine and Redis is for unix boxes. There's a windows clone, sure, but... ugh.
+
+#### That's a wrap!
+
+The next two chapters, Foldable and Traversable, cover typeclasses that rely on Monoid, Functor, Applicative, and Monad.
+
+### Chapter 20: Foldable
+
+**Stopping point: p.823**
+
+#### Foldable
+
+* Folding is monoidal in nature.
+
+#### The Foldable class
+
+* The minimal complete definition for a Foldable instance requires you to write either a `foldMap` function or `foldr` function.
+* Foldable requires a datatype with the following kind: `* -> *`. Just like Functor.
+
+#### Revenge of the monoids
+
+Folding implies a monoid. The Foldable typeclass makes this explicit with some of its operations:
+
+```
+fold :: Monoid m => t m -> m
+foldMap :: Monoid m => (a -> m) -> t a -> m
+```
+
+Note that `fold` just uses the Monoid instance of the element(s) inhabiting `t` to produce a summary value.
+
+Holy cow. You can use type annotations to force a list of numbers into a specific newtype, like so:
+
+```
+xs :: [Sum Integer]
+xs = [1, 2, 3, 4, 5]
+
+-- and
+ys :: [Product Integer]
+ys = [1, 2, 3, 4, 5]
+```
+
+**And now for something different**
+
+`foldMap` is like `fold`, except that it requires you to first map each element in the structure to a Monoid first.
+
+Note that if you `foldMap` over a structure that already contains a monoidal value, then the function you pass doesn't necessarily have to return a NEW type of monoidal value. For example:
+
+```
+> foldMap id [Sum 1, Sum 2, Sum 3]
+Sum {getSum = 6}
+```
+
+Compare this to `foldr`, where the only Monoid that matters is the one implied by the folding function. Your input Foldable could be any Monoid, but it wouldn't matter -- only the folding function matters.
+
+When you foldMap over a `Foldable` that only contains one value (like Maybe), it doesn't "need" the Monoid instance to combine values, because there's only one value. However, you still need a Monoid instance to make it typecheck, and `mempty` is used in the event no value is present (e.g., folding over `Nothing`).
+
+**Stopping point: p.828 ("20.4 Demonstrating Foldable instances")**
+
+#### Demonstrating Foldable instances
+
+**Identity**
+
+**Maybe**
+
+* The `Foldable` instance for Maybe relies on the given type's monoidal `mempty` for `foldMap` in the event of Nothing.
+
+#### Some basic derived operations
+
+Here's the info on the `Foldable` typeclass:
+
+```
+class Foldable (t :: \* -> \*) where
+  Data.Foldable.fold :: Monoid m => t m -> m
+  foldMap :: Monoid m => (a -> m) -> t a -> m
+  foldr :: (a -> b -> b) -> b -> t a -> b
+  Data.Foldable.foldr' :: (a -> b -> b) -> b -> t a -> b
+  foldl :: (b -> a -> b) -> b -> t a -> b
+  Data.Foldable.foldl' :: (b -> a -> b) -> b -> t a -> b
+  foldr1 :: (a -> a -> a) -> t a -> a
+  foldl1 :: (a -> a -> a) -> t a -> a
+  Data.Foldable.toList :: t a -> [a]
+  null :: t a -> Bool
+  length :: t a -> Int
+  elem :: Eq a => a -> t a -> Bool
+  maximum :: Ord a => t a -> a
+  minimum :: Ord a => t a -> a
+  sum :: Num a => t a -> a
+  product :: Num a => t a -> a
+  {-# MINIMAL foldMap | foldr #-}
+```
+
+Remember that all of the operations can be defined in terms of `foldMap` or `foldr`.
+
+* `toList` simply puts all the elements in a structure into a list. In the case of Nothing, for example, it returns `[]`.
+* `null` checks whether a given structure is empty. It returns true for Left, Nothing, empty lists, and so on.
+* `length` gives the number of `a` elements in a structure. Note that this doesn't include elements which are "part of the structure", e.g., `length (Left 5)` == `0`
+* `elem` determines if an element is in a structure (only checking the `a` values, of course).
+* `maximum` gives the largest element a non-empty structure, and `minimum` the smallest. Be careful: these will throw runtime errors if given empty structure.
+* `sum` and `product` well... give the sum and product of the members of a structure. If the structure is empty, the appropriate identity value will be returned.
+
+**Stopping point: p.835 ("Exercises: Library Functions")**
+
+**Exercises: Library Functions (p.835-836)**
+
+(See `chapter20/src/libraryFunctions.hs`.)
+
+#### Chapter 20 Exercises
+
+(See `chapter20/src/chapterExercises.hs`.)
+
+Done with chapter 20! Woot!
+
+### Chapter 21: Traversable
+
+**Stopping point: p.839**
+
+#### Traversable
+
+Note the first line of `:info` about the Traversable class:
+
+`class (Functor t, Foldable t) => Traversable (t :: \* -> \*)`
+
+Functor and Foldable are superclasses of Traversable.
+
+Traversable gives you a way to "traverse a data structure, mapping a function inside a structure while accumulating the applicative contexts along the way."
+
+#### The Traversable typeclass definition
+
+The `Traverse` typeclass has two primary functions:
+
+* `traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)`
+* `sequenceA :: (Applicative f, Traversable t) => t (f a) -> f (t a)`
+
+These two functions can be defined in terms of each other, so minimally, you need to define one of them for your instance.
+
+#### sequenceA
+
+The `sequenceA` function allows you to flip two structures around. For example:
+
+```
+> sequenceA $ Just [1,2,3]
+[Just 1, Just 2, Just 3]
+> sequenceA $ [Just 5, Nothing]
+Nothing
+```
+
+Note that `Data.Maybe` offers a `catMaybes` function which takes a list of Maybe values and returns a new list containing only the values from `Just`s in the original list:
+
+```
+> catMaybes [Just 1, Just 2, Nothing]
+[1,2]
+```
+
+#### traverse
+
+This is how `traverse` is defined by default:
+
+`traverse f = sequenceA . fmap f`
+
+Here's an example of how it works:
+
+```
+> traverse Just [1,2,3]
+Just [1,2,3]
+```
+
+**mapM is `traverse`**
+
+**In versions of GHC prior to 7.10**, `mapM` is basically a more concrete version of `traverse`, and `sequence` is a more concrete version of `sequenceA`.
+
+#### So, what's Traversable for?
+
+Well, anytime you wanna invert a structure of two nested type constructors, then that's Traversable. Also, anytime you wanna map a function over a doubly-nested structure then invert it, that's Traversable.
+
+**Stopping point: p.845 ("Morse code revisited")**
+
+#### Morse code revisited
+
+`traverse` is just `fmap` and `sequence`. `sequence` is what makes it special
+
+#### Do all the things
+
+**Stopping point: p.851 ("Strength for understanding")**
+
+**Strength for understanding**
+
+Since Traversable is stronger than Functor and Foldable, we can implement those classes in terms of Traversable's operations.
+
+#### Traversable instances
+
+**Either**
+
+**Tuple**
+
+#### Traversable Laws
+
+`traverse` must satisfy the following laws:
+
+* Naturality: `t . traverse f = traverse (t . f)`
+* Identity: `traverse Identity = Identity`
+* Composition: `traverse (Compose . fmap g . f) = Compose . fmap (traverse g) . traverse f`
+
+`sequenceA` must satisfy these laws:
+
+* Naturality: `t . sequenceA = sequenceA . fmap t`
+* Identity: `sequenceA . fmap Identity = Identity`
+* Composition: `sequenceA . fmap Compose = Compose . fmap sequenceA . sequenceA`
+
+#### Quality Control
+
+* You can QuickCheck Traversable instances with the checkers library.
+
+#### Chapter 21 Exercises
+
+In `chapter21/src`, see `traversableInstances.hs`, `skiFree.hs`, and `instancesForTree.hs`.
+
+Done with chapter 21! Noice!
+
+### Chapter 22: Reader
+
+#### Reader
+
+* Reader is a solution to the problem of having to pass around information that needs to be accessed by all parts of an application.
+
+#### A new beginning
+
+This section will use `chapter22/src/examples.hs`.
+
+Remember that, when you load code from a file, the monomorphism restriction applies, which forces any un-annotated bindings to have concrete types.
+
+`fmap` for functions is the same as composition. This makes sense because of the following:
+
+```
+fmap (+1) (*5)
+-- is equivalent to
+\x -> (+1) $ (*5) x
+```
+
+**Stopping point: p.863 ("Now we're in an Applicative context.")**
