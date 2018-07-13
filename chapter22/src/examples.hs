@@ -20,3 +20,9 @@ bbop = (+) <$> boop <*> doop
 
 duwop :: Integer -> Integer
 duwop = liftA2 (+) boop doop
+
+boopDoop :: Integer -> Integer
+boopDoop = do
+  a <- boop
+  b <- doop
+  return (a + b)

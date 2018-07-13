@@ -4460,3 +4460,70 @@ fmap (+1) (*5)
 ```
 
 **Stopping point: p.863 ("Now we're in an Applicative context.")**
+
+* You can use `(<*>)` from the Applicative instance for functions to apply two functions to the same argument and combine their results with a third function. For example: `((+) <$> (*2) <*> (+10)) 3` == `(3*2) + (3+10)` == `19`
+* The type of `(<*>)` for functions is `(<*>) :: (a -> a -> b) -> (a -> a) -> (a -> b)`
+* Functions even have an instance of Monad! See `boopDoop` for an example.
+* The idea of Reader is to string functions together that share an input.
+
+**Short Exercise: Warming Up (pp.867-868)**
+
+(See `chapter22/src/warmingUp.hs`.)
+
+#### This is Reader
+
+* Reader utilizes the instance of Monad for functions. In fact, when we refer to "Reader", we are sometimes referring to the practice of using the function applicative and monad.
+* Reader, e.g., the function Monad, allows us to read an argument from the environment into functions.
+
+#### Breaking down the Functor of functions
+
+* The `r` in `((->) r)` stands for "reader".
+* Since functions have the kind `* -> * -> *`, and Functor, Applicative, and Monad take `* -> *`-kinded types, those instances must ignore the first type variable in the function datatype definition, which is the function's parameter. Here's the definition: `data (->) a b`
+* The **return value** of a function is the value that's transformed by `fmap`, for example, **not** the parameter.
+
+Function composition actually matches the type of `fmap` for Functions. Check it out:
+
+```
+fmap :: Functor f => (a -> b) -> f a -> f b
+     ::              (b -> c) -> f b -> f c
+                     (b -> c) -> ((->) a) b -> ((->) a) c
+                     (b -> c) -> (a -> b) -> (a -> c)
+
+(.)  ::              (b -> c) -> (a -> b) -> (a -> c)
+```
+
+#### But uh, Reader?
+
+**Reader** is a newtype wrapper for the function type:
+
+```
+newtype Reader r a =
+  Reader { runReader :: r -> a }
+```
+
+Reader's Functor instance is basically identical to the function Functor instance, but with the Reader data constructor sprinkled in.
+
+**Exercise: Ask (p.873)**
+
+(See `chapter22/src/ask.hs`.)
+
+#### Functions have an Applicative too
+
+Here are the types of the Applicative operations, specialized to the function type:
+
+```
+pure :: a -> (r -> a)
+(<*>) :: (r -> a -> b) -> (r -> a) -> (r -> b)
+```
+
+**Demonstrating the function Applicative**
+
+"Reader" doesn't always refer to the Reader newtype; sometimes it refers to the use of the Applicative and Monad instances of the function type.
+
+**Stopping point: p.876**
+
+**Exercise: Reading Comprehension (pp.877-878)**
+
+See `chapter22/src/readingComprehension.hs`
+
+**Stopping point: p.878 ("The Monad of functions")**
