@@ -107,7 +107,7 @@ I did the following exercises on paper. The answers are shown here.
 ### 10/22/2017 (Sunday)
 **Pages 25 - 31.5 (6.5 pages)**
 
-#### Chapter 2: Hello Haskell!
+### Chapter 2: Hello Haskell!
 
 #### Stack and the REPL
 
@@ -334,7 +334,7 @@ let waxOn = x * 5
 * An **operator** is a function which is infix by default. In Haskell, operators must consist of symbols and not alphanumeric characters.
 * **Syntactic sugar** is syntax in a programming language which provides the programmer a more readable, friendlier alternative to more dense syntactical constructs.
 
-#### Chapter 3: Strings
+### Chapter 3: Strings
 
 * A string is a data structure used to represent text.
 * Types are a way of _categorizing values_.
@@ -4527,3 +4527,100 @@ pure :: a -> (r -> a)
 See `chapter22/src/readingComprehension.hs`
 
 **Stopping point: p.878 ("The Monad of functions")**
+
+#### The Monad of functions
+
+Here's the type of bind, specialized to functions:
+
+```
+-- normal type
+(>>=) :: Monad m => (m    a) -> (a -> (m    b)) ->  m    b
+-- specialized to functions
+(>>=) ::            (r -> a) -> (a -> (r -> b)) -> (r -> b)
+```
+
+**The Monad instance**
+
+
+```
+return :: a -> r -> a
+```
+
+Note the similarity with `const`.
+
+**Example uses of the Reader type**
+
+**Exercise: Reader Monad (p.882)**
+
+See `chapter22/src/readerMonad.hs`
+
+#### Reader Monad by itself is boring
+
+The Reader Monad can't do anything the Reader Applicative can't. You can actually write (>>=) for functions like so:
+
+```
+m >>= k = flip k <*> m
+```
+
+#### You can change what comes below, but not above
+
+* The `r` in Reader is read-only, meaning that you can't change it in calling functions. The State monad lets you do this -- you can return a new value which the calling functions will use.
+* I don't know what the hell the above bullet point _really_ means.
+
+#### You tend to see ReaderT, not Reader
+
+* Generally, in Haskell, people tend to use the reader monad transformer so it can provide Reader functionality to a monad with several other abilities.
+* If you _do_ have a Reader, it's usually for a record type with several useful values rather than a single Int value, for example.
+
+#### Chapter 22 Exercises
+
+See `chapter22/src/readerPractice.hs`
+
+**Rewriting Shawty**
+
+I'm putting the `shawty` code elsewhere, not in this Github repo.
+
+#### Chapter 23 Definitions
+
+* A **monad transformer** is a datatype that takes a monad as an argument and returns a monad as a result for the purposes of combining two Monads into one that shares the behaviors of both.
+
+### Chapter 23: State
+
+#### State
+
+#### What is state?
+
+* State is data that can change.
+* In Haskell, we cannot mutate values, so we can use things like the State type to represent state without mutation.
+* The State monad allows us to represent data that can change over the course of multiple computations _without_ resorting to mutation.
+* The `ST` type can be used for _in-place_ mutation, but that is not discussed in this chapter.
+* Note that the Monad for State is not strictly necessary for representing state, but it does make it more convenient to work with.
+* The State type does not require or rely upon i/o or IO.
+* `State` is referentially transparent.
+
+**Stopping point: p.893 ("Random numbers")**
+
+The System.Random library gives us a few functions for generating random numbers:
+
+* `mkStdGen :: Int -> StdGen` creates a StdGen based off a seed value.
+* `next :: g -> (Int, g)` allows us to generate random numbers from a given StdGen seed.
+* `random :: (RandomGen g, Random a) => g -> (a, g)` allows us to create random values of an arbitrary type.
+
+Note that `next` and `random` deterministically generate the same random number given the same StdGen value. This is because there are no side effects hidden in `StdGen` or any of the functions (in fact, there _can't_ be unless one of the types involved wraps/uses `IO`). That's why `next` and `random` both return a tuple; the second value is a new generator that we can use to generate a new random number.
+
+#### The State newtype
+
+`State` is a newtype which looks like this:
+
+```
+newtype State s a =
+  State { runState :: s -> (a, s) }
+```
+
+State works similarly to Random in that it chains new values of State together so that you're never actually mutating anything, you're just getting a new State.
+
+#### Throw down
+
+**Stopping point: p.899**
+
+See `chapter23/src/randomExample.hs`.
