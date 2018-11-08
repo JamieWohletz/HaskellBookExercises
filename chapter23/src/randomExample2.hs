@@ -11,3 +11,9 @@ rollDie = state $ do
   (n, s) <- randomR (1, 6)
   return (intToDie n, s)
 
+rollDie' :: State StdGen Die
+rollDie' =
+  intToDie <$> state (randomR (1, 6))
+
+rollDieThreeTimes' :: State StdGen (Die, Die, Die)
+rollDieThreeTimes' = liftA3 (,,) rollDie rollDie rollDie

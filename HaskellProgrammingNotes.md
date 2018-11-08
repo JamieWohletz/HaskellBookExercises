@@ -5,8 +5,8 @@
 #### Functional Programming
 * Functional programming is a paradigm where functions map one input value to one output value, like mathematical functions.
 * The set of _input_ values for a function is called the **domain**, the set of output values is called the **codomain**. The subset of output values the function actually uses is called the **image** or **range**.
-  
-  For example, the domain may be all positive integers, and the codomain may be all positive integers as well, but the image may only be {1,2,3}.
+
+For example, the domain may be all positive integers, and the codomain may be all positive integers as well, but the image may only be {1,2,3}.
 * **Referential transparency** means that functions *deterministically* map one input to one output. Given the same input, the function **_always_** returns the same output.
 * Haskell is a _pure functional programming language_ because it is a lambda calculus.
 #### Lambda Calculus
@@ -16,8 +16,8 @@
 * * **Variables** - Names for values
 * * **Expressions** - An expression can be an abstraction, a variable, or a combination of both.
 * **Abstractions consist of two parts**: A **head** and a **body**, which are **separated by a period**:
-  1. The _head_ consists of a 𝜆 (lambda) followed by a variable name. Example: **𝜆x**
-  2. The _body_ is an expression. 
+1. The _head_ consists of a 𝜆 (lambda) followed by a variable name. Example: **𝜆x**
+2. The _body_ is an expression. 
 * **Lambdas abstractions are _anonymous functions_**. They have no names.
 * **Arguments** are input values for lambda functions.
 
@@ -31,13 +31,13 @@
 * **Application** is the process of passing an argument to a lambda function. For example, in `(𝜆x.x) 5`, `5` is applied to `𝜆x.x` (the identity function).
 * **Beta reduction** is the process of replacing bound variables with arguments until there are no heads or arguments remaining. Once a variable is replaced in the body, the head in which it was bound is discarded. 
 
-  **Example**:
-  1. `(𝜆x.x) 5` is `𝜆x.x` applied to `5`
-  2. `(𝜆[x = 5].x`; assign `x` to `5`
-  3. `5`; throw away the head and replace the `x` in the body with `5`.
-  
-  **Note that the purpose of the head is to bind variables**. This is important when free variables are present; without the head, you couldn't distinguish between free and bound variables!
-  
+**Example**:
+1. `(𝜆x.x) 5` is `𝜆x.x` applied to `5`
+2. `(𝜆[x = 5].x`; assign `x` to `5`
+3. `5`; throw away the head and replace the `x` in the body with `5`.
+
+**Note that the purpose of the head is to bind variables**. This is important when free variables are present; without the head, you couldn't distinguish between free and bound variables!
+
 * Lambdas may be applied to other lambdas, for example: `(𝜆x.x)(𝜆y.y)`.
 * In the lambda calculus, **application** (reduction) **is left-associative**. This means that `(𝜆x.x)(𝜆y.y)(5)` is equivalent to `((𝜆x.x)(𝜆y.y))(5)`. (This expression evaluates to `5`.) 
 * **Lambdas may only bind one variable and accept one argument**. Lambdas with multiple bound variables, like `𝜆xy.xy` are actually nested lambdas which each bind one variable (in this case, `𝜆x.𝜆y.xy`). This is called **currying**. 
@@ -56,8 +56,8 @@
 * There is a difference between a fully applied function and a fully _evaluated_ function. For example, `(𝜆𝑥.x) 5` is fully _applied_, but it is not in beta normal form because it is not fully _evaluated_. In beta normal form, the expression becomes `5`.
 * **Combinators** are lambda abstractions with _no free variables_. For example, `𝜆𝑥𝑦.𝑥y` is a combinator, while `𝜆𝑥𝑦.𝑥z` is _not_, because `z` is a free variable. Combinators are important because they only combine their bound variables.
 * It is possible for lambda expressions to **diverge**, which means that they can never be reduced to beta normal form.
-  
-  For example: `(𝜆𝑥.𝑥x)(𝜆𝑥.𝑥x)` diverges because its reduction results in the original expression. (This particular expression is called _omega_).
+
+For example: `(𝜆𝑥.𝑥x)(𝜆𝑥.𝑥x)` diverges because its reduction results in the original expression. (This particular expression is called _omega_).
 * Divergence is important in programming because programs that diverge never produce an answer or result; they never halt.
 
 
@@ -113,25 +113,25 @@ I did the following exercises on paper. The answers are shown here.
 
 * **Stack** is a cross-platform build and project management tool for Haskell.
 * There are two primary ways to interact with Haskell:
-  1. Via the REPL (GHCi)
-  2. By creating a module in a file and loading it with GHCi
+1. Via the REPL (GHCi)
+2. By creating a module in a file and loading it with GHCi
 * You can run the REPL with either of the following commands: `stack ghci` or `ghci`.
 * To exit GHCi, type `:quit`.
 * **Prelude** is a library of standard functions. It is automatically imported in the REPL. It is included in Haskell's `base` package.
 * Special commands in the REPL begin with a colon (:).
 * Developing in Haskell usually follows these steps:
-  1. Edit code in a source file
-  2. Load source module in REPL and interact with and test it
-  3. Repeat
+1. Edit code in a source file
+2. Load source module in REPL and interact with and test it
+3. Repeat
 * You can use the `:load` command in the REPL to load all the functions from a source file into the REPL.
 * To reset your REPL back to the default state (with no loaded modules except Prelude), use the `:module` command.
 
 #### Haskell
 
 * All Haskell consists of two fundamental pieces:
-  1. **Expressions** - values, function applications, or combinations of expressions. Expressions always return a value.
-      * Examples: `1`, `1 + (3 * 2)`, `f 1 2 3`
-  2. **Declarations** - allow you to name expressions so they can be reused without copy-pasting code.
+1. **Expressions** - values, function applications, or combinations of expressions. Expressions always return a value.
+* Examples: `1`, `1 + (3 * 2)`, `f 1 2 3`
+2. **Declarations** - allow you to name expressions so they can be reused without copy-pasting code.
 * `::` is for writing down type signatures. It can be read as "has the type". For example: `num :: Number` is read as "num has the type Number."
 * Expressions are in **normal form** when they can be reduced no further.
 * Reducible expressions are called **redexes**.
@@ -146,12 +146,12 @@ I did the following exercises on paper. The answers are shown here.
 #### Haskell
 
 * Function definitions/declarations look like this:
-  
-  `<function_name> <formal_param_1> <formal_param_2> ... = <expression>`
 
-  There can be N formal parameters. They are all separated by spaces. Here is an example function:
+`<function_name> <formal_param_1> <formal_param_2> ... = <expression>`
 
-  `add num1 num2 = num1 + num2`
+There can be N formal parameters. They are all separated by spaces. Here is an example function:
+
+`add num1 num2 = num1 + num2`
 * In versions of GHCi < 8.0.1, you must use `let` to define a function, e.g., `let <function_defintion>`
 * Function names must begin with a lowercase letter.
 * _Formal parameters_ are the named parameters in the function definition, _arguments_ (or _actual parameters_) are the values you pass in to the function when you apply it.
@@ -165,8 +165,8 @@ I did the following exercises on paper. The answers are shown here.
 **Exercises: Comprehension Check** (p.34)
 
 1. Make the following functions work in the REPL.
-  *  `half x = x / 2` becomes `let half x = x / 2` in the REPL.
-  * `square x = x * x` becomes `let square x = x * x` in the REPL.
+*  `half x = x / 2` becomes `let half x = x / 2` in the REPL.
+* `square x = x * x` becomes `let square x = x * x` in the REPL.
 2. Write a function ... `pify x = x * 3.14`
 3. Write a function ... `pify' = (*) pi`
 
@@ -200,17 +200,17 @@ I did the following exercises on paper. The answers are shown here.
 **Pages 40-45.5 (5.5 pages)**
 
 * You can declare a **module** in a file by placing it at the top:
-  
-  ```module MyModule where```
+
+```module MyModule where```
 * Module names are capitalized.
 * Indentation matters in Haskell. It is used as a syntactic boundary.
 * Terms in a group must have the same level of indentation. They must line up. For example:
-  ```
-  bam x =
-    let y = 5
-        z = 4 * x
-    in y * z
-  ```
+```
+bam x =
+let y = 5
+z = 4 * x
+in y * z
+```
 * You can break up expressions across multiple lines, but if you do so, you must indent the piece(s) on the next line(s) by at least a space. Preferably, you should preserve the indentation of the term on the first line so the terms line up.
 * All the declarations in a file should be at the leftmost margin to avoid compile errors.
 * The compiler expects all declarations in a file to have the same _level of indentation_. Placing them on the leftmost margin is the simplest and recommended way of ensuring this.
@@ -231,11 +231,11 @@ I will show the fixed versions.
 1. `let area x = 3.14 * (x * x)`
 2. `let double x = x * 2`
 3. 
-  ```
-    x = 7
-    y = 10
-    f = x + y
-  ```
+```
+x = 7
+y = 10
+f = x + y
+```
 
 #### Arithmetic
 
@@ -245,8 +245,8 @@ I will show the fixed versions.
 * `rem` is remainder after division
 * `mod` is remainder after modular division
 * `quot` is to `rem` as `div` is to `mod`, per these laws:
-  * `(quot x y)*y + (rem x y) == x`
-  * `(div x y)*y + (mod x y) == x`
+* `(quot x y)*y + (rem x y) == x`
+* `(div x y)*y + (mod x y) == x`
 * `rem 10 -4 == 2` WHEREAS `mod 10 -4 == -2`
 * **Modular arithmetic** is a system which allows for integers which "wrap around" at a certain value.
 * A good example is a clock. In a clock, you do arithmetic _modulo 12_, which means that twelve is equal to both 12 and 0.
@@ -262,8 +262,8 @@ I will show the fixed versions.
 * The dollar sign ($) is a way of delaying function application so that you can remove parenthesis. It is `infixr 0`. For example, `(*3) (4 + 4)` is equivalent to `(*3) $ 4 + 4`. Also, `(*3) ((+3) (4 - 3))` is equivalent to `(*3) $ (+3) $ 4 - 3`.
 * **In order to use an _infix_ operator as a _prefix_ operator, you must wrap the operator in parentheses** (e.g., `(+)`).
 * **Sectioning** is when you partially apply an infix operator using prefix notation. For example, `(+3)` is `(+)` partially applied to `3`.
-  * Operand position matters: `(/ 3) 6` is not equal to `(3 /) 6`.
-  * **WARNING**: You cannot section with subtraction like you can with division, multiplication, and addition. This `(-1) 1` won't work, because GHC interprets `(-1)` as being "negative one" and not the subtraction function partially applied to 1. You _can_ place the operand on the left, though: `(1-) 1` works. To get around the negation problem, use `(subtract 1) 1`. 
+* Operand position matters: `(/ 3) 6` is not equal to `(3 /) 6`.
+* **WARNING**: You cannot section with subtraction like you can with division, multiplication, and addition. This `(-1) 1` won't work, because GHC interprets `(-1)` as being "negative one" and not the subtraction function partially applied to 1. You _can_ place the operand on the left, though: `(1-) 1` works. To get around the negation problem, use `(subtract 1) 1`. 
 
 #### Let and Where
 
@@ -317,10 +317,10 @@ let waxOn = x * 5
 ```
 
 1.
-    1. 1135
-    2. 1135
-    3. -1110
-    4. 1110
+1. 1135
+2. 1135
+3. -1110
+4. 1110
 (Exercises are continued in the Chapter2Exercises.hs file.)
 
 **Definitions**:
@@ -375,8 +375,8 @@ let waxOn = x * 5
 ---
 
 Given a type signature
-    
-    (++) :: [a] -> [a] -> [a]
+
+(++) :: [a] -> [a] -> [a]
 
 Everything after the double colon (`::`) is about our types, not our values. The variable `a` is a _type variable_. The square brackets are list _type constructors_.
 
@@ -422,27 +422,27 @@ List functions:
 Reading syntax
 
 1. 
-    1. Correct ♫
-    2. Incorrect; `++` must be wrapped in parentheses for use with prefix notation. ♫
-    3. Correct ♫
-    4. Incorrect. Missing `"` ♫
-    5. Incorrect. List must come first. ♫
-    6. Correct. ♫
-    7. Incorrect. Number of elements to take must be passed as an integer argument before the string. ♫
-    8. Correct. ♫
+1. Correct ♫
+2. Incorrect; `++` must be wrapped in parentheses for use with prefix notation. ♫
+3. Correct ♫
+4. Incorrect. Missing `"` ♫
+5. Incorrect. List must come first. ♫
+6. Correct. ♫
+7. Incorrect. Number of elements to take must be passed as an integer argument before the string. ♫
+8. Correct. ♫
 2.
-    1. Matches d) ♫
-    2. Matches c) ♫
-    3. Matches e) ♫
-    4. Matches a) ♫
-    5. Matches b) ♫
+1. Matches d) ♫
+2. Matches c) ♫
+3. Matches e) ♫
+4. Matches a) ♫
+5. Matches b) ♫
 
 Building functions
 
 1. 
-    1. `"Curry is awesome" ++ "!"` ♫
-    2. `head (drop 4 "Curry is awesome!")` WRONG. This returns `'y'`, which is a character, not the string `"y"`. Granted, they probably just miswrote this question; if so, `"Curry is awesome!" !! 4` is the easiest way to get the `'y'`. But assuming they didn't miswrite it, let's try again... `take 1 (drop 4 "Curry is awesome!")`. ♫
-    3. `drop 9 "Curry is awesome!"` ♫
+1. `"Curry is awesome" ++ "!"` ♫
+2. `head (drop 4 "Curry is awesome!")` WRONG. This returns `'y'`, which is a character, not the string `"y"`. Granted, they probably just miswrote this question; if so, `"Curry is awesome!" !! 4` is the easiest way to get the `'y'`. But assuming they didn't miswrite it, let's try again... `take 1 (drop 4 "Curry is awesome!")`. ♫
+3. `drop 9 "Curry is awesome!"` ♫
 
 2 - 5. (See `chapter3exercises.hs`)
 
@@ -472,7 +472,7 @@ Building functions
 
 Here is an example datatype declaration:
 
-    data Bool = False | True
+data Bool = False | True
 
 In this example, `Bool` is the name of the _type_ constructor, and `False` and `True` are the _data_ constructors. The pipe (|) reads as "or"; this says that Bools can be either False OR True. Types which may be _one_ of any of a number of things separated by pipes are known as _sum types_.
 
@@ -482,7 +482,7 @@ In this example, `Bool` is the name of the _type_ constructor, and `False` and `
 
 **Exercises: Mood Swing (pp.89-90)**
 
-    data Mood = Blah | Woot deriving Show
+data Mood = Blah | Woot deriving Show
 
 1. The type constructor is `Mood`.
 2. You could use `Blah` or `Woot`.
@@ -494,9 +494,9 @@ In this example, `Bool` is the name of the _type_ constructor, and `False` and `
 
 **Pattern matching** allows you to define piecewise functions. For example:
 
-    boolBit :: Bool -> Int
-    boolBit True = 1
-    boolBit _ = 0
+boolBit :: Bool -> Int
+boolBit True = 1
+boolBit _ = 0
 
 You can match on each data constructor available in a given type. In this case, we match on `True`, then we write a **catch-all case using an underscore (_)**. The catch-all case will handle all possible values not already accounted for by earlier matches. In this case, the only possible remaining value is `False`.
 
@@ -505,13 +505,13 @@ You can match on each data constructor available in a given type. In this case, 
 #### Numbers
 
 * **Integral** numbers are positive or negative whole numbers.
-    * `Int` is a fixed precision (_bounded_) type for integers. It cannot hold arbitrarily large or small integers.
-    * `Integer` is an unbounded type of integers. It _can_ hold arbitrarily large numbers.
+* `Int` is a fixed precision (_bounded_) type for integers. It cannot hold arbitrarily large or small integers.
+* `Integer` is an unbounded type of integers. It _can_ hold arbitrarily large numbers.
 * **Fractional** numbers are decimal numbers.
-    * `Float` is for single-precision floating point numbers. These are dangerous to use because of rounding errors.
-    * `Double` is for double-precision floating point numbers.
-    * `Rational` is for numbers which can be represented as a ratio of two integers. Using this type, `1/2` will be stored as pair of integer (1 and 2), not as a decimal number. This type is arbitrarily precise.
-    * `Scientific` represents numbers with scientific notation. The exponent is an Int and the coefficient is an Integer.
+* `Float` is for single-precision floating point numbers. These are dangerous to use because of rounding errors.
+* `Double` is for double-precision floating point numbers.
+* `Rational` is for numbers which can be represented as a ratio of two integers. Using this type, `1/2` will be stored as pair of integer (1 and 2), not as a decimal number. This type is arbitrarily precise.
+* `Scientific` represents numbers with scientific notation. The exponent is an Int and the coefficient is an Integer.
 * **Typeclasses** are a way of adding reusable functionality to all types with an instance of that typeclass.
 * You can assign a concrete type to a polymorphic value with the `::` operator, e.g., `120 :: Int8`.
 * Fixed-size Int types are _bounded_ (meaning they have a minimum and maximum value) and they are represented with _two's complement_.
@@ -540,7 +540,7 @@ Comparison operators:
 
 The datatype `Bool`, whose declaration is as follows:
 
-    data Bool = True | False
+data Bool = True | False
 
 can be read as "The datatype Bool is represented by the values True or False."
 
@@ -594,7 +594,7 @@ The two-tuple is expressed at both type and term levels with the constructor `(,
 
 Look at the two-tuple datatype:
 
-    data (,) a b = (,) a b
+data (,) a b = (,) a b
 
 This data type has two important qualities:
 * It accepts **type parameters**, represented by the type variables `a` and `b`. Concrete types must be passed in as arguments to the tuple type constructor as a consequence of these type parameters. Note that since the type variables are different (`a` /= `b`), you can supply different types to this constructor.
@@ -602,8 +602,8 @@ This data type has two important qualities:
 
 This datatype also has special syntax, as you can see with the `(,)`. You can use this syntax to pattern match tuples:
 
-    fst' :: (a, b) -> a
-    fst' (a, b) = a
+fst' :: (a, b) -> a
+fst' (a, b) = a
 
 #### Lists
 
@@ -623,20 +623,20 @@ THURSDAY HACKATHON.
 
 1. The type signature of length would be `length :: [a] -> Integer`. WRONG. It's actually `Foldable t => t a -> Int`. I was close-ish.
 2. 
-    1. `5` (Int) ♫
-    1. `3` (Int) ♫
-    1. `2` (Int) ♫
-    1. `5` (Int) ♫
+1. `5` (Int) ♫
+1. `3` (Int) ♫
+1. `2` (Int) ♫
+1. `5` (Int) ♫
 1. The first one will work and the second one will return error, because the division function `(/)` works with Fractional numbers only, and `length` returns an Int. ♫
 1. You can fix it by using the `div` function, which is integer division. ♫
 1. The type is `Bool`, and the value would be `True` since 5 == 5. ♫
 1. `Bool`, `False` ♫
 1. Answers:
-    1. Will work; True ♫
-    1. Won't work, because lists can't hold values of different types ♫
-    1. Will work; 5 ♫
-    1. Will work; True && False => False ♫
-    1. Won't work; `9` is not a Bool ♫
+1. Will work; True ♫
+1. Won't work, because lists can't hold values of different types ♫
+1. Will work; 5 ♫
+1. Will work; True && False => False ♫
+1. Won't work; `9` is not a Bool ♫
 1. Function (♫):
 ```
 isPalindrome :: (Eq a) => [a] -> Bool
@@ -676,21 +676,21 @@ Match the function names to their types
 * **Type aliases** allow you to give a more concise and/or semantically meaningful name to an existing type. Example: `type Name = String`
 * **Arity** is the number of arguments a function accepts.
 * **Polymorphism** in Haskell gives you the ability to perform operations upon values of several or all types. There are two kinds:
-    * **Parametric** polymorphism means a value can be _any_ type. The `id` function, for example, is parametrically polymorphic because it accepts any type: `id :: a -> a`.
-    * **Constrained** or _bounded_ polymorphism means a value can be one of a specific set of types, as dictated by typeclass constraints.
+* **Parametric** polymorphism means a value can be _any_ type. The `id` function, for example, is parametrically polymorphic because it accepts any type: `id :: a -> a`.
+* **Constrained** or _bounded_ polymorphism means a value can be one of a specific set of types, as dictated by typeclass constraints.
 
 ---
 
 * **Term-level** code is the code that holds values and is executed when your program is run.
 * **Type-level** code is the code which specifies the types of your expressions and is statically analyzed before the program is run.
 * There are **seven** named constructs in Haskell:
-    * Term-level variables
-    * Type variables
-    * Functions
-    * Typeclasses
-    * Type constructors
-    * Data constructors
-    * Modules
+* Term-level variables
+* Type variables
+* Functions
+* Typeclasses
+* Type constructors
+* Data constructors
+* Modules
 
 ### 11/4/2017 (Saturday)
 
@@ -862,16 +862,16 @@ It is also possible to declare the type of a declaration in where and let clause
 where:
 ```
 triple x = triple' x
-  where triple' :: Integer -> Integer
-        triple' x = x * 3
+where triple' :: Integer -> Integer
+triple' x = x * 3
 ```
 
 let:
 ```
 triple x = let triple' :: Integer -> Integer
-               triple' x = x * 3
-           in
-             triple' x
+triple' x = x * 3
+in
+triple' x
 ```
 
 Of course, you cannot force arbitrary types into other arbitrary types. For example, this won't work:
@@ -904,12 +904,12 @@ Aside: **Top-level declarations without type signatures will be forced into conc
 These are saved in Chapter5Exercises.hs.
 
 1. 
-    * Value: `54` (I'm a dumbass). Type: `Num a => a`. ♫
-    * Value: `(0,"doge")`. Type: `Num a => (a, [Char])` ♫
-    * Value: `(0,"doge")`. Type: `(Integer, [Char])` ♫
-    * Value: `False`. Type: `Bool` ♫
-    * Value: `5`. Type: `Int` ♫
-    * Value: `False`. Type: `Bool` 
+* Value: `54` (I'm a dumbass). Type: `Num a => a`. ♫
+* Value: `(0,"doge")`. Type: `Num a => (a, [Char])` ♫
+* Value: `(0,"doge")`. Type: `(Integer, [Char])` ♫
+* Value: `False`. Type: `Bool` ♫
+* Value: `5`. Type: `Int` ♫
+* Value: `False`. Type: `Bool` 
 2. `Num a => a` ♫
 3. `Num a => a -> a` ♫
 4. `Fractional a => a` ♫
@@ -918,25 +918,25 @@ These are saved in Chapter5Exercises.hs.
 **Does it compile?**
 
 1. This won't compile because `bigNum` is not a function and the first argument of `$` must be a function. We can fix it as follows (♫):
-    ```
-    bigNum = (^) 5
-    wahoo = bigNum 10
-    ```
+```
+bigNum = (^) 5
+wahoo = bigNum 10
+```
 
 2. No errors. ♫
 3. This won't compile because `b` is not a function, and neither is `c`. We could rewrite it as follows (♫):
-    ```
-    a = (+)
-    b = 5
-    c = a 10
-    d = c 200
-    ```
+```
+a = (+)
+b = 5
+c = a 10
+d = c 200
+```
 4. The first expression won't compile in the REPL because `b` is not defined yet; the second expression won't compile because `c` is not defined. We could rewrite it as:
-    ```
-    c = 20
-    b = 10000 * c
-    a = 12 + b
-    ```
+```
+c = 20
+b = 10000 * c
+a = 12 + b
+```
 
 ### 11/9/2017 (Thursday)
 
@@ -987,17 +987,17 @@ These are saved in Chapter5Exercises.hs.
 **Definitions**
 
 * _Polymorphism_ means "made of many forms." It refers to type variables which may be more than one concrete type. In Haskell, there are two types of polymorphism:
-    * _ad-hoc_ or _constrained_ polymorphism, which refers to type variables that have one or more typeclass constraints. **Haskell requires that (type, typeclass) pairs be unique** (in scope), so you cannot have two instances of the `Num` typeclass for the `Int` type, for example. This is very good; it makes reasoning about constrained variables much easier.
-    * _parametric_ polymorphism, which is a fully polymorphic type variable with no constraints
+* _ad-hoc_ or _constrained_ polymorphism, which refers to type variables that have one or more typeclass constraints. **Haskell requires that (type, typeclass) pairs be unique** (in scope), so you cannot have two instances of the `Num` typeclass for the `Int` type, for example. This is very good; it makes reasoning about constrained variables much easier.
+* _parametric_ polymorphism, which is a fully polymorphic type variable with no constraints
 * _Type inference_ is an algorithm for guessing the type of a given expression based on things already known about that expression (e.g., what concrete types, if any it uses). In Haskell, type inference will guess the principal type.
 * The _principal type_ is the most generic type an expression can have and still typecheck.
 * A _type variable_ is a variable occuring in a type signature which represents some type or set of types. For example, in `id :: a -> a`, `a` is the type variable.
 * A _typeclass_ provides an algebra (set of operations) that may be associated with various types through instantiation. Typeclasses allow us to operate on any type with that typeclass instance without having to write special code for it. In other words, you can write a function `add :: Num a => a -> a -> a; add x y = x + y` which will work with _every type that instantiates the Num typeclass_, as opposed to having to write the `add` function for every possible type it could accept (such as Int, Integer, Float, Double, Rational, etc). 
 * _Parametricity_ describes functions whose behavior is the same no matter what argument types are passed to them because their parameter types are parametrically polymorphic.
 * _Modules_ are a way of organizing code. They can contain imports, data declarations, constants, function definitions -- basically anything. Example (in a source file): `module Bar where`
-    * You can import a function named `foo` from a module named `Bar` with `import Bar (foo)`. Note that this will also import all typeclass instances defined in the module `Bar`
-    * You can import _everything_ exported from a module named `Bar` with `import Bar`
-    * Note that **you may only define one module per file**.
+* You can import a function named `foo` from a module named `Bar` with `import Bar (foo)`. Note that this will also import all typeclass instances defined in the module `Bar`
+* You can import _everything_ exported from a module named `Bar` with `import Bar`
+* Note that **you may only define one module per file**.
 
 ### 11/11/2017 (Saturday)
 
@@ -1043,7 +1043,7 @@ data Identity a = Identity a
 
 -- notice the typeclass constraint: Eq a => ...
 instance Eq a => Eq (Identity a) where
-  (==) (Identity v) (Identity v') = v == v'
+(==) (Identity v) (Identity v') = v == v'
 ```
 
 **Exercises: Eq Instances (pp.178-179)**
@@ -1160,9 +1160,9 @@ I think `enumFromThenTo` takes a starting value, a "then" value, and a "to" valu
 1. No. `Person` does not have a `Show` instance. (correct)
 2. No. `Mood` does not have an `Eq` instance. (correct)
 3. 
-    1. `Mood` values
-    1. It will throw an error, because you cannot compare a `Num` with a `Mood`
-    1. It will throw an error, because `Mood` doesn't implement the `Ord` typeclass
+1. `Mood` values
+1. It will throw an error, because you cannot compare a `Num` with a `Mood`
+1. It will throw an error, because `Mood` doesn't implement the `Ord` typeclass
 4. Yes... (correct)
 
 **Given a datatype declaration, what can we do?**
@@ -1217,23 +1217,23 @@ I think `enumFromThenTo` takes a starting value, a "then" value, and a "to" valu
 * Functions are values which accept a parameter; values which do not define a parameter, such as `myInt = 5` are just regular values (_not_ functions).
 * Polymorphic variables whose letters vary in a type signature can be _but are not required to be_ different types. For example, in `const :: a -> b -> a`, `a` and `b` can be different types, but they don't have to be.
 * It is possible to bind variables through function application and in let expressions:
-    * Function application: given the function `addOne x = x + 1`, you can _bind_ `x` to `1` by applying 1 as an argument: `addOne 1`
-    * `let` expression: 
+* Function application: given the function `addOne x = x + 1`, you can _bind_ `x` to `1` by applying 1 as an argument: `addOne 1`
+* `let` expression: 
 
-    ```
-    bindExp :: Integer -> String
-    bindExp x =
-      let y = 5 in
-      "the integer was: " ++ show x ++ " and y was: " ++ show y
-    ```
-    The variable `y` is bound to the value `5` in the `let` expression.
+```
+bindExp :: Integer -> String
+bindExp x =
+let y = 5 in
+"the integer was: " ++ show x ++ " and y was: " ++ show y
+```
+The variable `y` is bound to the value `5` in the `let` expression.
 * It is possible to **shadow** variables so that they cannot be accessed in a certain scope. Example: 
 ```
 shadowThings :: Integer -> Integer
 shadowThings x = 
-  let y = 5 in
-    let y = 2 in
-      x + y
+let y = 5 in
+let y = 2 in
+x + y
 ```
 In this case, the binding of `y` to `5` is shadowed by the inner `let` expression, and therefore is not visible within that inner let expression's scope.
 * **Haskell is lexically scoped.** Another term for lexical scoping is _static_ scoping.
@@ -1250,21 +1250,21 @@ In this case, the binding of `y` to `5` is shadowed by the inner `let` expressio
 
 * **Anonymous functions** are functions without names. 
 * You can construct an anonymous function by using the lambda syntax (`\`). For example, given this _named_ function:
-    ```
-    double :: Integer -> Integer
-    double x = x * 2
-    ```
-    The equivalent _anonymous_ function is
-    ```
-    (\x -> x * 2) :: Integer -> Integer
-    ```
+```
+double :: Integer -> Integer
+double x = x * 2
+```
+The equivalent _anonymous_ function is
+```
+(\x -> x * 2) :: Integer -> Integer
+```
 * In GHCi error messages, `it` refers to the last expression you entered.
 * You will usually have to wrap lambdas in parentheses to make it clear how they're being used: `(\x -> x * 2) 2` will work but `\x -> x * 2 2` will not because it thinks you're trying to apply 2 to 2.
 * You can use `let` in GHCi multi-line mode to define things by indenting the remaining lines of the declaration to the same level as the beginning of the first line after `let`. E.g.,
-    ```
-    let f :: Int -> Int
-        f x = x * 2
-    ```
+```
+let f :: Int -> Int
+f x = x * 2
+```
 
 **Exercises: Grab Bag (pp.224-225)**
 
@@ -1275,9 +1275,9 @@ In this case, the binding of `y` to `5` is shadowed by the inner `let` expressio
 a) 
 ```
 addOneIfOdd' n = case odd n of
-  True -> f n
-  False -> n
-  where f = \n -> n + 1
+True -> f n
+False -> n
+where f = \n -> n + 1
 ```
 ♫
 
@@ -1365,8 +1365,8 @@ c) `k1` and `k2` both return the number `3`. ♫
 2. 
 ```
 f :: (a, b, c) 
-  -> (d, e, f)
-  -> ((a, d), (c, f))
+-> (d, e, f)
+-> ((a, d), (c, f))
 f (a, b, c) (d, e, f) = ((a, d), (c, f))
 ```
 ♫
@@ -1383,9 +1383,9 @@ Here is an example case expression:
 ```
 beepIfTrue :: Bool -> String
 beepIfTrue b =
-  case b of
-    True -> "Beep!"
-    False -> "Boop."
+case b of
+True -> "Beep!"
+False -> "Boop."
 ```
 
 ### 11/23/2017 - THANKSGIVING! Day off.
@@ -1414,9 +1414,9 @@ All correct! Woot!
 \ string!"
 ```
 * Higher-order functions are useful for:
-    1. Manipulating the way in which functions are applied with respect to their arguments
-    2. Making functions more configurable by accepting function parameters
-       for key pieces of logic rather than hardcoding that logic.
+1. Manipulating the way in which functions are applied with respect to their arguments
+2. Making functions more configurable by accepting function parameters
+for key pieces of logic rather than hardcoding that logic.
 
 **Exercises: Artful Dodgy (pp.246-247)**
 
@@ -1464,8 +1464,8 @@ Example function using a _guard block_:
 ```
 myAbs :: Integer -> Integer
 myAbs x
-  | x < 0     = (-x)
-  | otherwise = x
+| x < 0     = (-x)
+| otherwise = x
 ```
 
 In the example above, there are two _guards_:
@@ -1483,15 +1483,15 @@ type CountryCode = String
 
 favoriteFood :: CountryCode -> String
 favoriteFood c
- | c == "us" = usFavorite
- | c == "jp" = japanFavorite
- | c == "fr" = franceFavorite
- | otherwise = unknown
- where
-   usFavorite = "Hamburgers!"
-   japanFavorite = "Sushi ^^"
-   franceFavorite = "Caviar"
-   unknown = "Who knows?"
+| c == "us" = usFavorite
+| c == "jp" = japanFavorite
+| c == "fr" = franceFavorite
+| otherwise = unknown
+where
+usFavorite = "Hamburgers!"
+japanFavorite = "Sushi ^^"
+franceFavorite = "Caviar"
+unknown = "Who knows?"
 ```
 
 Note that you can use the variables defined in the where declaration
@@ -1574,7 +1574,7 @@ print = putStrLn . show
 3. d) ♫
 4. b) ♫
 5. a) ♫
- 
+
 ### 11/28/2017 (Tuesday)
 
 **Pages 263.5-275 (11.5)**
@@ -1584,9 +1584,9 @@ print = putStrLn . show
 **Let's write code**
 
 1. 
-    * (see chapter7exercises.hs)
-    * Yes, the type is the same
-    * (see chapter7exercises.hs)
+* (see chapter7exercises.hs)
+* Yes, the type is the same
+* (see chapter7exercises.hs)
 2. (see chapter7exercises.hs)
 3. (see chapter7exercises.hs)
 4. (see arith4.hs)
@@ -1717,10 +1717,10 @@ Let's talk about division.
 20 divided by 4 is
 
 20 - 4 (16)
-   - 4 (12)
-   - 4 (8)
-   - 4 (4)
-   - 4 (0)
+- 4 (12)
+- 4 (8)
+- 4 (4)
+- 4 (0)
 0 is less than 4, so we stopped. 
 The result is the number of times we subtracted, which is 5.
 
@@ -1772,12 +1772,12 @@ Number 1:
 
 ```
 15 - 2; count = 1, n = 13
-   - 2; count = 2, n = 11
-   - 2; count = 3, n = 9
-   - 2; count = 4, n = 7
-   - 2; count = 5, n = 5
-   - 2; count = 6, n = 3
-   - 2; count = 7, n = 1
+- 2; count = 2, n = 11
+- 2; count = 3, n = 9
+- 2; count = 4, n = 7
+- 2; count = 5, n = 5
+- 2; count = 6, n = 3
+- 2; count = 7, n = 1
 -- n (1) < d (2) so now we return (count, n)
 (7, 1)
 ```
@@ -1990,13 +1990,13 @@ Number 1: `[4, 16, 36, 64, 100]` ♫
 Number 2:
 ```
 [
-    (1,64), (1,81), (1,100),
-    (4,64), (4,81), (4,100),
-    (9,64), (9,81), (9,100),
-    (16,64), (16,81), (16,100),
-    (25,64), (25,81), (25,100),
-    (36,64), (36,81), (36,100),
-    (49,64), (49,81), (49,100)
+(1,64), (1,81), (1,100),
+(4,64), (4,81), (4,100),
+(9,64), (9,81), (9,100),
+(16,64), (16,81), (16,100),
+(25,64), (25,81), (25,100),
+(36,64), (36,81), (36,100),
+(49,64), (49,81), (49,100)
 ]
 ```
 ♫
@@ -2138,9 +2138,9 @@ Production hotfix, didn't have time to study :(
 3. Bottom. ♫
 4. This function takes a String and returns a list of Bools indicating which characters were vowels. Its type is `String -> [Bool]`. ♫
 5. Answers below:
-    1. `[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]` ♫
-    2. `[1, 10, 20]` ♫
-    3. `[15, 15, 15]` ♫
+1. `[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]` ♫
+2. `[1, 10, 20]` ♫
+3. `[15, 15, 15]` ♫
 6. `negateThrees = map (\x -> bool x (-x) (x == 3))` ♫
 
 ---
@@ -2446,8 +2446,8 @@ Whew!
 * A **catamorphism** is a fold from one arbitrary datatype to another (or possibly the same). **Catamorphisms are not limited to lists, or even collections**. Example catamorphisms: `bool :: a -> a -> Bool -> a` (for transforming `Bool`s into `a`s), `maybe :: b -> (a -> b) -> Maybe a -> b` (for transforming `Maybe a`s into `b`s).
 * A **tail call** is the last call made in a function. It produces the final result of the function. For example, in `f a = h $ g a`, `h` is the tail call.
 * **Tail recursion** is a function whose tail calls are recursive invocations of the function itself. For example, `g x = g (h (x + 1))` is tail-recursive, because the outermost invocation is `g`.
-    * `foldr` is _not_ tail-recursive: `foldr f z (x:xs) = f x (foldr f z xs)`
-    * `foldl` _is_ tail-recursive: `foldl f z (x:xs) = foldl f (f z x) xs`
+* `foldr` is _not_ tail-recursive: `foldr f z (x:xs) = f x (foldr f z xs)`
+* `foldl` _is_ tail-recursive: `foldl f z (x:xs) = foldl f (f z x) xs`
 
 CHAPTER 10 K.O.'d! WOOOOOO!
 
@@ -2616,9 +2616,9 @@ Record syntax looks like this:
 
 ```
 data Person =
-    Person { name :: String
-           , age :: Int }
-           deriving (Eq, Show)
+Person { name :: String
+, age :: Int }
+deriving (Eq, Show)
 ```
 The equivalent normal product type for this would be:
 ```
@@ -2640,10 +2640,10 @@ Number 1:
 ```
 type Gardener = String
 data Garden =
-    Gardenia Gardener
-  | Daisy Gardener
-  | Rose Gardener
-  | Lilac Gardener
+Gardenia Gardener
+| Daisy Gardener
+| Rose Gardener
+| Lilac Gardener
 ```
 
 ---
@@ -2674,7 +2674,7 @@ There are **two** things we can do with a value:
 ```
 myRecord :: RecordProduct Integer Float
 myRecord = RecordProduct
-  { pfirst = 42, psecond = 0.5 }
+{ pfirst = 42, psecond = 0.5 }
 ```
 
 **Exercise: Programmers (pp.430-431)**
@@ -2709,9 +2709,9 @@ juicer _ = False
 -- using accessors
 juicer' :: SportsPlayer -> IsJuicin
 juicer' player =
-  case secondVal player of
-    True -> True
-    _ -> False
+case secondVal player of
+True -> True
+_ -> False
 
 -- The above two are just for demonstration. Normally,
 -- you would do this, since it's just a Bool value:
@@ -2824,9 +2824,9 @@ Number 6:
 The BinaryTree datatype is defined as follows:
 ```
 data BinaryTree a =
-    Leaf
-  | Node (BinaryTree a) a (BinaryTree a)
-  deriving (Eq, Ord, Show)
+Leaf
+| Node (BinaryTree a) a (BinaryTree a)
+deriving (Eq, Ord, Show)
 ```
 
 **Inserting into trees**
@@ -3047,11 +3047,11 @@ Woot woot! Another chapter down.
 * Stack will create executables based on your cabal file. You can add an "executable stanza" to your cabal file which looks like this:
 
 ```
- executable hello
-    hs-source-dirs:      src
-    main-is:             Main.hs
-    default-language:    Haskell2010
-    build-depends:       base >= 4.7 && < 5
+executable hello
+hs-source-dirs:      src
+main-is:             Main.hs
+default-language:    Haskell2010
+build-depends:       base >= 4.7 && < 5
 ```
 
 In the above config, `hello` is the name of the executable.
@@ -3066,10 +3066,10 @@ This is what a library stanza in a cabal file looks like:
 
 ```
 library
-  hs-source-dirs:      src
-  exposed-modules:     Hello
-  build-depends:       base >= 4.7 && < 5
-  default-language:    Haskell2010
+hs-source-dirs:      src
+exposed-modules:     Hello
+build-depends:       base >= 4.7 && < 5
+default-language:    Haskell2010
 ```
 
 ### Module exports
@@ -3200,7 +3200,210 @@ Number 4:
 
 Done with chapter 13! At long last! Woo!
 
-**Stopping point: p.536**
+### Chapter 14: Testing
+
+#### Testing
+
+#### A quick tour of testing for the unitiated
+
+* Unit testing is the most atomic form of software testing. You test the behavior of individual functions.
+* Spec testing is the same as unit testing, but with more human-readable test cases.
+* Property testing, which originated in Haskell, allows you to verify that certain properties of your program hold true for a large set of random data. It's basically an easier way to prove the correctness of a piece of logic than writing a formal proof (though obviously it's not bulletproof, like proofs are).
+
+#### Conventional testing
+
+* We will use the `hspec` library to write some tests.
+
+**Truth according to Hspec**
+
+* You can use the `:browse` command in GHCi to see all the types available from a module, e.g., `:browse Test.Hspec`
+
+**Our first Hspec test**
+
+**Stopping point: p.544 ("We want to test that...")**
+
+**Intermission: Short Exercise**
+
+See `chapter24/src/main.hs`
+
+#### Enter QuickCheck
+
+* QuickCheck is a property testing library (the first of its kind).
+* QuickCheck allows you to test that certain properties hold true for your code.
+* Hspec integrates with QuickCheck, so you can property test within your spec files.
+
+**Arbitrary instances**
+
+* The Arbitrary class and the Gen newtype allow QuickCheck to generate random data for a given type. See the function `arbitrary`: `arbitrary :: Arbitrary a => Gen a`
+
+You can use the `sample` and `sample'` functions from `Test.QuickCheck` to see lists of random values of a given type. It's easiest to use these in conjunction with `arbitrary`, for example:
+
+```
+> sample (arbitrary :: Gen Int)
+> sample' (arbitrary :: Gen String)
+```
+
+You can use either of the two following functions from QuickCheck to generate values:
+```
+choose :: System.Random.Random a => (a, a) -> Gen a
+elements :: [a] -> Gen a
+```
+
+`choose` will give you a random value in the range between the two given values, and `elements` will give you a random value from a list of values.
+
+You can also write functions to generate Arbitrary values of polymorphic types:
+
+```
+genThreeple :: (Arbitrary a, Arbitrary b, Arbitrary c) => Gen (a, b, c)
+genThreeple = do
+a <- arbitrary
+b <- arbitrary
+c <- arbitrary
+return (a, b, c)
+```
+
+You could use this like so:
+
+```
+> sample (genThreeple :: Gen (String, Int, Int))
+```
+
+You can even generate complex datatypes like `Either`:
+
+```
+genEither :: (Arbitrary a, Arbitrary b) => Gen (Either a b)
+genEither = do
+a <- arbitrary
+b <- arbitrary
+elements [Left a, Right b]
+```
+
+You can also use the `frequency` function to generate things with a given weight, e.g.,
+
+`frequency [ (1, return Nothing), (3, return (Just a)) ]`
+
+The above will give you more `Just`s than `Nothing`s.
+
+**Stopping point: p.553 ("Using QuickCheck without Hspec")**
+
+**Using QuickCheck without Hspec**
+
+```
+prop_additionGreater :: Int -> Bool
+prop_additionGreator x = x + 1 > x
+
+runQc :: IO ()
+runQc = quickCheck prop_additionGreater
+```
+
+#### Morse code
+
+**Turning words into code**
+
+**Stopping point: p.560**
+
+**The Main event**
+
+**Make sure it's all working**
+
+**Time to test!**
+
+You can load your Stack project's test suite in the repl like so:
+`stack ghci <project-name>:<test-component-name>`. You can find `test-component-name` in your package.yaml, directly below the `tests` entry. In my case, it's `morse-test`.
+
+#### Arbitrary instances
+
+**Babby's First Arbitrary**
+
+**Identity Crisis**
+
+Here's an example of generating an arbitrary value within the Identity type:
+
+```
+identityGen :: Arbitrary a => Gen (Identity a)
+identityGen = do
+a <- arbitrary
+return (Identity a)
+```
+
+You can use this `identityGen` function as the `arbitrary` function for an Arbitrary Identity instance.
+
+**Stopping point: p.568 ("Arbitrary Products")**
+
+**Arbitrary Products**
+
+You can use the same technique we used for Identity to make Arbitrary instances for product types.
+
+```
+data Pair a b = Pair a b deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Pair a b) where
+arbitrary = do
+a <- arbitrary
+b <- arbitrary
+return (Pair a b)
+```
+
+**Greater than the sum of its parts**
+
+With sum types, you can use the `oneof` function from `Test.QuickCheck.Gen` to randomly choose one element from a list of possibilities.
+
+```
+data Sum a b =
+First a
+| Second b
+deriving (Eq, Show)
+
+sumGenEqual :: (Arbitrary a, Arbitrary b) => Gen (Sum a b)
+sumGenEqual = do
+a <- arbitrary
+b <- arbitrary
+oneof [return $ First a, return $ Second b]
+```
+
+You can also use the `frequency` function if you want to give different weights to the options to be chosen.
+
+You don't necessarily have to write an Arbitrary instance for your datatype. You could also just write whatever `Gen` values you need and use them.
+
+**CoArbitrary**
+
+The CoArbitrary typeclass (and `coarbitrary` function) allows you to generate functions.
+
+If your datatype derives the `Generic` typeclass, then you can use it with coarbitrary fo FREE!
+
+#### Chapter 14 Exercises
+
+**Validating numbers into words**
+
+See `chapter14/src/WordNumber.hs` for the original exercises, and `chapter14/test/WordNumberSpec.hs` for the tests.
+
+**Using QuickCheck**
+
+See `chapter14/app/QuickChecks.hs`.
+
+**Failure**
+
+This property fails because the square root of a given number may not be exactly representable as a floating point number and therefore squaring the (rounded) result will _not_ yield the original number. https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+
+**Idempotence**
+
+Idempotence is the concept of a function only changing its input value on its first application. Think of a sorted list. The first time you pass a list to `sort`, the list becomes sorted. The next time you pass the now-sorted list into `sort`, it remains unchanged.
+
+See `chapter14/app/QuickChecks.hs`
+
+**Hangman testing**
+
+I lost the source code for this, so no hangman testing for me.
+
+**Validating ciphers**
+
+See `chapter14/app/QuickCheck.hs` for the quickcheck tests and `chapter14/src/Cipher.hs` for the ciphers.
+
+#### Chapter 14 Definitions
+
+* **Unit testing** is a testing methodology whereby you test the smallest parts of your application possible.
+* **Property testing** is where a sizable sample of a large input space is tested against some property or law to verify that said property holds for all inputs in that space. In Haskell, you can use `QuickCheck` to do property testing.
+* An **idempotent** operation only produces a unique output on the first application; all subsequent applications of the original output value to the function produce the same value.
 
 ### 2/14/2018 (Wednesday)
 
@@ -3225,10 +3428,10 @@ The Monoid typeclass is defined in Haskell as follows:
 
 ```
 class Monoid m where
-  mempty :: m
-  mappend :: m -> m -> m
-  mconcat :: [m] -> m
-  mconcat = foldr mappend mempty
+mempty :: m
+mappend :: m -> m -> m
+mconcat :: [m] -> m
+mconcat = foldr mappend mempty
 ```
 
 #### Examples of using Monoid
@@ -3397,7 +3600,7 @@ in ...
 -- where
 ...
 where
-  (x:xs) = [1, 2, 3, 4]
+(x:xs) = [1, 2, 3, 4]
 ```
 
 #### Chapter 15 Definitions
@@ -3419,7 +3622,7 @@ The Functor typeclass is defined as follows:
 
 ```
 class Functor f where
-  fmap :: (a -> b) -> f a -> f b
+fmap :: (a -> b) -> f a -> f b
 ```
 
 (Note that the `f` in the above is the _same_ `f` everywhere in the definition. It represents a type that implements the Functor typeclass.)
@@ -3465,7 +3668,7 @@ class Functor f where
 
 **Structure preservation**
 
- * **Remember, the Functor operation (`fmap`) PRESERVES STRUCTURE**. `fmap` will never change the structure of a datatype with which it's used.
+* **Remember, the Functor operation (`fmap`) PRESERVES STRUCTURE**. `fmap` will never change the structure of a datatype with which it's used.
 
 #### The Good, the Bad, and the Ugly
 
@@ -3504,7 +3707,7 @@ For example: `instance Functor (Either a) where`. Notice the `a` -- passing this
 #### Ignoring Possibilities
 
 * `Either` and `Maybe` are useful because they allow you to `fmap` in a way that ignores failure cases.
-  Their `fmap` implementations both only map over the success case data constructors.
+Their `fmap` implementations both only map over the success case data constructors.
 
 **Maybe**
 
@@ -3535,7 +3738,7 @@ To write a Functor instance for this, `f` must also have a Functor instance so w
 
 ```
 instance Functor f => Functor (Wrap f) where
-  fmap f (Wrap fa) = Wrap (fmap f fa)
+fmap f (Wrap fa) = Wrap (fmap f fa)
 ```
 
 Interesting, eh?
@@ -3796,9 +3999,9 @@ Here is the Validation datatype definition:
 
 ```
 data Validation err a =
-    Failure err
-  | Success a
-  deriving (Eq, Show)
+Failure err
+| Success a
+deriving (Eq, Show)
 ```
 
 Note that this is _identical_ to the Either datatype. The only reason for it is that it has a different Applicative instance.
@@ -3869,9 +4072,9 @@ Here is the definition of the Monad typeclass:
 
 ```
 class Applicative m => Monad m where
-  (>>=) :: m a -> (a -> m b) -> m b
-  (>>) :: m a -> m b -> m b
-  return :: a -> m a
+(>>=) :: m a -> (a -> m b) -> m b
+(>>) :: m a -> m b -> m b
+return :: a -> m a
 ```
 
 Notice that Applicative is a superclass of Monad.
@@ -3957,16 +4160,16 @@ Here's an example of desugaring `do` syntax:
 ```
 bindingAndSequencing :: IO ()
 bindingAndSequencing = do
-  putStrLn "name pls:"
-  name <- getLine
-  putStrLn ("y helo thar: " ++ name)
+putStrLn "name pls:"
+name <- getLine
+putStrLn ("y helo thar: " ++ name)
 
 bindingAndSequencing' :: IO ()
 bindingAndSequencing' =
-  putStrLn "name pls:" >>
-  getLine >>=
-  \name ->
-    putStrLn ("y helo thar: " ++ name)
+putStrLn "name pls:" >>
+getLine >>=
+\name ->
+putStrLn ("y helo thar: " ++ name)
 ```
 
 As you can see, `do` syntax allows us to flatten out deep nesting produced by binding multiple variables.
@@ -4005,10 +4208,10 @@ See `chapter18/src/doSomething.hs`.
 The following cannot be rewritten using Applicative:
 ```
 doSomething' n = do
-  a <- f n
-  b <- g a
-  c <- h b
-  pure (a, b, c)
+a <- f n
+b <- g a
+c <- h b
+pure (a, b, c)
 ```
 The reason for this is because each subsequent calculation relies on a value produced in a previous calculation.
 Monad allows you to create a sort of "value pipeline" like this, but Applicative does not: each calculation stands alone.
@@ -4095,9 +4298,9 @@ Monads are composed using the bind operator:
 
 ```
 mcomp :: Monad m =>
-         (b -> m c)
-      -> (a -> m b)
-      ->  a -> m c
+(b -> m c)
+-> (a -> m b)
+->  a -> m c
 mcomp f g a = g a >>= f
 ```
 
@@ -4293,23 +4496,23 @@ Here's the info on the `Foldable` typeclass:
 
 ```
 class Foldable (t :: \* -> \*) where
-  Data.Foldable.fold :: Monoid m => t m -> m
-  foldMap :: Monoid m => (a -> m) -> t a -> m
-  foldr :: (a -> b -> b) -> b -> t a -> b
-  Data.Foldable.foldr' :: (a -> b -> b) -> b -> t a -> b
-  foldl :: (b -> a -> b) -> b -> t a -> b
-  Data.Foldable.foldl' :: (b -> a -> b) -> b -> t a -> b
-  foldr1 :: (a -> a -> a) -> t a -> a
-  foldl1 :: (a -> a -> a) -> t a -> a
-  Data.Foldable.toList :: t a -> [a]
-  null :: t a -> Bool
-  length :: t a -> Int
-  elem :: Eq a => a -> t a -> Bool
-  maximum :: Ord a => t a -> a
-  minimum :: Ord a => t a -> a
-  sum :: Num a => t a -> a
-  product :: Num a => t a -> a
-  {-# MINIMAL foldMap | foldr #-}
+Data.Foldable.fold :: Monoid m => t m -> m
+foldMap :: Monoid m => (a -> m) -> t a -> m
+foldr :: (a -> b -> b) -> b -> t a -> b
+Data.Foldable.foldr' :: (a -> b -> b) -> b -> t a -> b
+foldl :: (b -> a -> b) -> b -> t a -> b
+Data.Foldable.foldl' :: (b -> a -> b) -> b -> t a -> b
+foldr1 :: (a -> a -> a) -> t a -> a
+foldl1 :: (a -> a -> a) -> t a -> a
+Data.Foldable.toList :: t a -> [a]
+null :: t a -> Bool
+length :: t a -> Int
+elem :: Eq a => a -> t a -> Bool
+maximum :: Ord a => t a -> a
+minimum :: Ord a => t a -> a
+sum :: Num a => t a -> a
+product :: Num a => t a -> a
+{-# MINIMAL foldMap | foldr #-}
 ```
 
 Remember that all of the operations can be defined in terms of `foldMap` or `foldr`.
@@ -4485,9 +4688,9 @@ Function composition actually matches the type of `fmap` for Functions. Check it
 
 ```
 fmap :: Functor f => (a -> b) -> f a -> f b
-     ::              (b -> c) -> f b -> f c
-                     (b -> c) -> ((->) a) b -> ((->) a) c
-                     (b -> c) -> (a -> b) -> (a -> c)
+::              (b -> c) -> f b -> f c
+(b -> c) -> ((->) a) b -> ((->) a) c
+(b -> c) -> (a -> b) -> (a -> c)
 
 (.)  ::              (b -> c) -> (a -> b) -> (a -> c)
 ```
@@ -4498,7 +4701,7 @@ fmap :: Functor f => (a -> b) -> f a -> f b
 
 ```
 newtype Reader r a =
-  Reader { runReader :: r -> a }
+Reader { runReader :: r -> a }
 ```
 
 Reader's Functor instance is basically identical to the function Functor instance, but with the Reader data constructor sprinkled in.
@@ -4614,7 +4817,7 @@ Note that `next` and `random` deterministically generate the same random number 
 
 ```
 newtype State s a =
-  State { runState :: s -> (a, s) }
+State { runState :: s -> (a, s) }
 ```
 
 State works similarly to Random in that it chains new values of State together so that you're never actually mutating anything, you're just getting a new State.
@@ -4623,4 +4826,1551 @@ State works similarly to Random in that it chains new values of State together s
 
 **Stopping point: p.899**
 
-See `chapter23/src/randomExample.hs`.
+See `chapter23/src/randomExample.hs` and `chapter23/src/randomExample2.hs`.
+
+A note on `do` syntax: The return value of a `do` block matches the return value of the last expression in the block. It is not automatically wrapped in the given monad's type, so for example:
+
+```
+test :: IO String
+test = do
+putStrLn "Hello!"
+"string"
+```
+
+will not compile because the last expression, `"string"` makes the type of the block `[Char]` when it should be `IO [Char]`.
+To fix this, simply wrap it in a `return`/`pure` call: `pure "string"`.
+
+Good god. This chapter is confusing.
+
+**Keep on rolling**
+
+* We can use `randomIO` to get a new random number without having to provide a new seed each time.
+
+**Exercises: Roll Your Own (p.903)**
+
+See `chapter23/src/rollYourOwn.hs`.
+
+#### Write State for yourself
+
+Here we go...
+
+See `chapter23/src/nature.hs`
+
+#### Get a coding job with one weird trick
+
+**Stopping point: p.905 ("A fizzbuzz using State is...")**
+
+* You can use a **difference list** when you want O(1) append times. https://github.com/spl/dlist
+* The difference list datatype has a Foldable instance.
+* Using State is a _stylistic_ choice. It's not strictly necessary; don't feel compelled to use it or _not_ to use it.
+
+**Stopping point: p.908 ("Fizzbuzz Differently")**
+
+**Fizzbuzz Differently**
+
+See `chapter23/src/fizzBuzzDifferently.hs`.
+
+#### Chapter 23 Exercises
+
+See `chapter23/src/chapterExercises.hs`
+
+
+MADE IT! Whew.
+
+### Chapter 24: Parser combinators
+
+#### Parser combinators
+
+* The idea behind **parsing** is to transform serialized textual or binary data into a structured datatype.
+* Serialized data is data that has been formatted in some way, such as JSON or XML, and that can be transmitted across a network connection or stored for later use.
+
+#### A few more words of introduction
+
+* This chapter won't cover the topic of parsing from the bottom-up like other chapters, but rather will approach it from the outside-in.
+
+#### Understanding the parsing process
+
+* A **parser** is a function that accepts some textual input (`String`, `ByteString`, `Text`, etc) and returns a structure such as a tree.
+* A **parser combinator** is a higher-order function that takes parsers as input and returns a new parser as output.
+* Remember, **combinators** are expressions with no free variables. The definition of "combinator" for parser combinators, however, is a little looser. See the above bullet point.
+
+**Since we didn't use an analogy for Monad**
+
+There is a parsing library called "trifecta" which we'll be using for this chapter.
+
+See `chapter24/src/learnParsers.hs`.
+
+**What demonstration purposes?**
+
+* Parsing is like moving a cursor around a linear stream of text, as if you're reading with your finger.
+
+**Back to the code**
+
+**A bit like...**
+
+* `Parser` from trifecta is a bit like State + failure.
+
+Here's the definition for the `Parser` type alias:
+
+```
+type Parser a = String -> Maybe (a, String)
+```
+
+This means that given an input String, the parser _might_ produce an output tuple with a data structure of type `a` and the remainder of the String that hasn't been parsed to produce `a`.
+
+**Stopping point: p.918 ("If we were talking about State...")**
+
+* Sequencing parse actions will modify the state of the parser, even if those actions have no interesting return value.
+
+**Back to our regularly scheduled coding**
+
+See `chapter24/src/learnParsers.hs`
+
+**Intermission: parsing free jazz**
+
+* Parsers only consume as much text as they need to produce the value requested.
+* Trifecta lets us parse UTF8 byte strings too: `parseByteString (char 'a') mempty "a"`
+
+#### Parsing fractions
+
+See `chapter24/src/Text/Fractions.hs`.
+
+* `fail` is a method available on the Monad typeclass that lets you embed an error state into your Monad. Note that since this doesn't make sense for all Monads, it will eventually be moved to MonadFail.
+
+**Stopping point: p.929 ("Exercise: Unit of Success")**
+
+**Exercise: Unit of Success (pp.929-930)**
+
+See `chapter24/src/UnitOfSuccess.hs`.
+
+#### Haskell's parsing ecosystem
+
+Some popular parsing libraries in Haskell are:
+* parsec
+* attoparsec
+* megaparsec
+* aeson - for parsing JSON
+* cassava - for parsing CSV data
+
+Trifecta has a complex and unusual design, so if you plan on doing a lot of parsing, you may wanna use attoparsec instead.
+
+Trifecta is broken into two parts:
+* parsers - typeclasses that abstract what you can do with a parser
+* trifecta - instances of those typeclasses and implementation specific to Trifecta
+
+Text.Trifecta exports both pieces in a convenient fashion.
+
+**Typeclasses of parsers**
+
+#### Alternative
+
+See `chapter24/src/AltParsing.hs`
+
+* The Alternative typeclass gives us `some`, `many`, and `(<|>)`.
+
+The QuasiQuotes language extension allows us to write multiline strings, like so:
+
+```
+string = [r|
+123
+abc
+456
+def
+|]
+```
+
+Note that `r` is defined in `raw-strings-qq`. There's a tutorial on QuasiQuotation at https://wiki.haskell.org/Quasiquotation. `r` is a macro which generates a `\n`-separated string without us having to write the newlines explicitly. 
+
+If you wanna see what a quasiquoter or Template Haskell generates at compile-time, you can use the -ddump-splices compiler flag. For example, in ghci:
+
+```
+> :set -ddump-splices
+> :l some/file/with/template/haskell/or/qqs.hs
+```
+
+**Return to Alternative**
+
+**Stopping point: p.939**
+
+**Exercise: Try Try (p.943)**
+
+See chapter24/src/TryTry.hs.
+
+#### Parsing configuration files
+
+* `.ini` files are used to store configuration information. The `ini` file format is informal and therefore somewhat flexible in what you can do with it.
+
+**Stopping point: p.944**
+
+It's usually easier to break big parsers into smaller, composable parsers that handle a subset of the overall problem space.
+
+#### Character and token parsers
+
+Parsing is traditionally done in two stages:
+1. Lexing - reads characters and produces tokens
+2. Parsing - reads tokens and produces an abstract syntax tree (AST)
+
+Example types:
+```
+lexer :: Stream Char -> Stream Token
+parser :: Stream Token -> AST
+```
+
+Lexers, also called tokenizers, are simpler than parsers, usually only looking one character ahead into the input stream.
+
+**Stopping point: p.954 ("Insert tokens to play")**
+
+* **Tokens** are strings with an assigned meaning (https://en.wikipedia.org/wiki/Lexical_analysis#Tokenization). For example, in the string `2341 \n 291 33`, the tokens may be `2341`, `291`, and `33` and may be recognized as "integers".
+* **Parsers** accept tokens and create an AST (like I said above, heh).
+* "Tokenization is about ignoring noise so you can focus on the structures you're parsing." But don't get too carried away with `token`-ized parsers -- try to make them as course-grained and selective as possible. Doing otherwise can cause your parser to be slow and difficult to understand.
+
+#### Polymorphic parsers
+
+You can write polymorphic parsers that will work with any library that implements the necessary parser typeclasses, such as `attoparsec`, `trifecta`, `parsec`, etc.
+
+See `chapter24/src/Text/FractionsPolymorphic`.
+
+**It's not perfect and could bite you**
+
+* You can write polymorphic parsers, but you should still understand the particulars of whatever library you end up using, because they're all slightly different.
+
+**Failure and backtracking**
+
+* You can use the `try` function from trifecta to attempt to parse something and return the cursor to the starting position if the parse fails
+Anytime you use `try`, you should probably also use `<?>`, which lets you annotate specific attempts, giving them more informative error messages than the default ones.
+
+```
+tryAnnot :: (Monad f, CharParsing f) => f Char
+tryAnnot =
+(try (char '1' >> char '2') <?> "Tried 12") <|> (char '3' <?> "Tried 3")
+```
+
+#### Marshalling from an AST to a datatype
+
+* When writing a program that handles text, parsing that text into some kind of structure is a good idea. It's difficult and error-prone to work solely within the text datatype.
+* **Unmarshalling** is the process of transforming some structure (the result of a parse) into "meaning", i.e., a _semantic_ structure.
+* The opposite is **marshalling**, which is the process of transforming the semantic structure back into the intermediate structure so that it can be serialized.
+* To **serialize** a data structure is to transform it into text.
+* Remember, **parsing** is to transform text into a data structure (usually an AST).
+
+Pipelines: 
+
+```
+-- parsing -> unmarshalling
+Text -> Structure -> Meaning
+```
+
+```
+-- marshalling -> serializing
+Meaning -> Structure -> Text
+```
+
+* There isn't _one_ way to accomplish these processes, but there is a library that has both of these "pipelines", as they were, built into its API.
+
+**Marshallilng and unmarshalling JSON data**
+
+* `aeson` is the most popular Haskell library for handling JSON.
+* `aeson` produces an untyped blob of data.
+
+See `chapter24/src/Marshalling.hs`.
+
+**Stopping point: p.968**
+
+**Back to the JSON**
+
+The `aeson` library exposes, among others, the two following functions:
+* `encode :: ToJSON a => a -> LBS.ByteString`
+* `decode :: FromJSON a => LBS.ByteString -> Maybe a`
+
+Notice that in order to encode or decode an arbitrary structure, it must
+have the appropriate typeclass instance (ToJSON or FromJSON, respectively).
+
+Be careful when attempting to decode JSON numbers. JSON numbers can be integers or floats, so you have to do extra work to make sure the number is the type that you want when decoding it.
+
+Made it to the chapter exercises! That chapter was yuuuuuuuuuuuuuuuge.
+
+#### Chapter 24 Exercises
+
+1. See `chapter24/src/SemVerParser.hs`
+2. See `chapter24/src/NaturalNumberParser.hs`
+3. See `chapter24/src/IntegerParser.hs`
+4. See `chapter24/src/PhoneNumberParser.hs`
+5. See `chapter24/src/LogFileParser.hs`
+6. See `chapter24/src/IPv4Parser.hs`
+7. Nope.
+
+#### Chapter 24 definitions
+
+1. A parser parses.
+2. A parser combinator takes two or more parsers and creates a new parser.
+3. Marshalling is the process of transforming a data structure into a format that can stored on disk or transmitted over the network.
+4. A tokenizer converts text into semantically meaningful structures.
+5. A lexer is a tokenizer.
+
+
+### Chapter 25: Composing types
+
+* Functors and applicatives can be composed, but monads not necessarily so.
+* When you compose two monads, the result isn't necessarily another monad.
+* There are times when you want to compose monads, however. Composing IO and Maybe would allow you to perform effectful computations that gracefully handle failure using Maybe, for example.
+* A **monad transformer** is a variant of a "regular type" (such as Maybe, Either, etc) that takes an additional monadic type argument. `MaybeT`, for example, is the transformer variant of `Maybe`.
+* Monad transformers let us bind over _both_ monads -- the original one (Maybe in the case of MaybeT) and the parameterized one.
+
+#### Common functions as types
+
+**Identity is boring**
+
+* In Haskell, accessor functions in record types will often start with the word "get" or "run" to imply that the function is for pulling a value out of a datatype. There's no difference between "get" and "run" -- you'll see both used for the same purpose in your journey through Haskell code.
+* Monad transformers are commonly written as newtypes. Note that this means that they are never sum or product types -- they are always used to simply wrap one extra layer of monadic structure around an existing type.
+* Remember, `newtypes` must have _one_ data constructor with _one_ parameter. They can have n _type_ parameters, but only one data constructor with one parameter.
+
+In this chapter, we will define the `Identity` type as
+
+```
+newtype Identity a =
+Identity { runIdentity :: a }
+```
+
+**Compose**
+
+Here is how we define a `Compose` datatype, which is the type-level parallel to the `(.)` function.
+
+```
+newtype Compose f g a =
+Compose { getCompose :: f (g a) }
+deriving (Eq, Show)
+```
+
+Note the similarity between the kind of the `Compose` type constructor and the type of the compose function: 
+
+```
+Compose :: (* -> *) -> (* -> *) -> * -> *
+(.)     :: (b -> c) -> (a -> b) -> a -> c
+```
+
+Anyway, with our Compose datatype, you can do stuff like the following:
+
+```
+> Compose $ Just [5]
+Compose { getCompose :: Just [1] }
+-- which has the following type:
+Num a => Compose Maybe [] a
+-- reflected by
+Compose   f   g  a
+```
+
+As we know, type constructors are like functions, but at the type level. They can accept type constants (of kind `*`) and other type constructors (of kind `* -> *` or higher). This fact is what allows for composition of types.
+
+**Stopping point: p986 ("Two little functors ...")**
+
+We can make a `Functor` instance for Compose like so:
+
+```
+instance (Functor f, Functor g) =>
+Functor (Compose f g) where
+fmap f (Compose fga) =
+Compose $ (fmap . fmap) f fga
+```
+
+We can arbitrarily nest types with `Compose`:
+
+```
+v :: Compose []
+Maybe
+(Compose Maybe [] Integer)
+v = Compose [Just (Compose $ Just [1])]             
+```
+
+Note that when we write a Functor instance for Compose,
+we are creating a _new_ Functor instance which leverages the two
+existing ones. So when people say that functors are closed under composition, they mean this: you can compose two Functors and get another, new Functor.
+
+#### Twinplicative
+
+**Exercise: Twinplicative (p.989)**
+
+See `chapter25/src/Twinplicative.hs`
+
+#### Twonad?
+
+You cannot compose two arbitrary datatypes' Monad instances to create a new third Monad instance. It's not possible. (Note that you _can_ compose two arbitrary datatypes _with_ Monad instances, but you just won't get a new Monad instance out of it.)
+
+**No free burrito lunches**
+
+Since you can't compose datatypes and get a new Monad instance, the way to get a Monad instance for combinations of types is through _monad transformers_. 
+
+**Stopping point: p.991 ("Exercises: Compose Instances")**
+
+**Exercises: Compose Instances (pp.991-992)**
+
+Part 1: See `chapter25/src/ComposeInstances.hs`
+
+Part 2: See `chapter25/src/Bifunctor.hs`
+
+#### Monad transformers
+
+* The only way to join two Monads is if one or both are concrete, not polymorphic. This is how monad transformers work: one Monad is concrete, the other is polymorphic and is given as a type variable.
+
+**Monadic stacking**
+
+**Doing it badly**
+
+* The silly way to combine two Monads is to explicitly declare a new type for them, like so: `newtype MaybeIO a = MaybeIO { runMaybeIO :: IO (Maybe a) }`. This is silly because you'd have to make one of these types for every combination of two Monads you wanted to join.
+* We don't have to do the above; transformers allow us to make a Monad for two types as long as _one_ of them is concrete.
+
+#### IdentityT
+
+This is what the identity monad transformer looks like:
+
+```
+newtype IdentityT f a =
+IdentityT { runIdentityT :: f a }
+deriving (Eq, Show)
+```
+
+**The bind breakdown**
+
+The Monad instance for IdentityT is written like so:
+
+```
+instance (Monad m) => Monad (IdentityT m) where
+return = pure
+(IdentityT ma) >>= f =
+IdentityT $ ma >>= runIdentityT . f
+```
+
+Note that this leverages the `>>=` of the wrapped monad as well.
+
+**Implementing the bind, step by step**
+
+* Remember, `(>>=)` is just `fmap` composed with `join` like so: `flip $ \f -> join . (fmap f)`
+* A useful debugging technique is to assert an erroneous type for an expression to get a compiler error showing what the actual type of the expression is.
+
+Woo, made it to page 1000! :D
+
+**Stopping point: p.1004 ("Refactoring")**
+
+* Check it out, `x >>= f = join (fmap f x)`
+
+**The essential extra of monad transformers**
+
+* The reason we needed to know the `IdentityT` type in order to combine its Monad and an arbitrary other Monad was so that we could unwrap the value stored in `IdentityT` with `runIdentityT`. This goes for all monad transformers.
+
+#### Finding a pattern
+
+* Since the monadic parameter to a monad transformer is polymorphic, you only have to write _one_ transformer for each type.
+
+The basic problem we are trying to solve with transformers is the following type transitions:
+
+`m (T m b)` to `m (m b)` to `m b` to `T m b`
+
+where `m` is the fully polymorphic Monad parameter and T is the concrete Monad of the transformer.
+
+### Chapter 26: Monad transformers
+
+awwwwwwwwwwwwwwww yeah.
+
+#### Monad transformers
+
+#### MaybeT
+
+The newtype for `MaybeT` is as follows:
+
+```
+newtype MaybeT m a =
+MaybeT { runMaybeT :: m (Maybe a) }
+```
+
+**Spoiler alert!**
+
+**Stopping point: p.1012 ("We can stretch this idea a bit...")**
+
+Here is the Applicative instance for MaybeT:
+
+```
+instance (Applicative m) => Applicative (MaybeT m) where
+pure x = MaybeT (pure (pure x))
+
+(MaybeT fab) <*> (MaybeT mma) =
+MaybeT $ (<*>) <$> fab <*> mma
+```
+
+**MaybeT Monad instance**
+
+Here's the Monad instance for MaybeT:
+
+```
+instance (Monad m) => Monad (MaybeT m) where
+return = pure
+(>>=) :: MaybeT m a
+-> (a -> MaybeT m b)
+-> MaybeT m b
+(MaybeT ma) >>= f =
+MaybeT $ do
+v <- ma
+case v of
+Nothing -> return Nothing
+Just y -> runMaybeT (f y)
+```
+
+#### EitherT
+
+```
+newtype EitherT e m a =
+EitherT { runEitherT :: m (Either e a) }
+```
+
+**Exercises: EitherT**
+
+See `chapter26/src/EitherTInstances.hs`
+
+**Stopping point: p.1016 ("ReaderT")**
+
+#### ReaderT
+
+ReaderT is like Reader, but with additional monadic structure wrapping the return value of the inner function. Check it out:
+
+```
+newtype ReaderT r m a =
+ReaderT { runReaderT :: r -> m a }
+```
+
+The book shows the instances for ReaderT on page 1017.
+
+#### StateT
+
+Here's the newtype for `StateT`:
+
+```
+newtype StateT s m a =
+StateT { runStateT :: s -> m (a, s) }
+```
+
+**Exercises: StateT (pp.1018-1020)**
+
+See `chapter26/src/StateTInstances.hs`
+
+**Stopping point: p.1020 ("ReaderT, WriterT, StateT")**
+
+**ReaderT, WriterT, StateT**
+
+* You don't need Writer because you can use State instead. State is more flexible and powerful than Writer.
+* There is a `RWST` type in the `transformers` library which is a transformer variant of Reader, Writer, and State combined.
+
+**Correspondence between StateT and Parser**
+
+A simple parser looks like this:
+
+```
+type Parser a = String -> Maybe (a, String)
+```
+
+Notice that this is basically a concrete version of StateT:
+
+```
+newtype StateT s m a =
+StateT { runStateT :: s -> m (a, s) }
+```
+
+#### Types you probably don't want to use
+
+**Why not use Writer or WriterT?**
+
+* Writer can easily lead to memory leaks in your program because it accumulates a series of unevaluated thunks (https://wiki.haskell.org/Thunk).
+* Writer is bad for log-streaming as well because you can't collect the logs until the program being logged is finished.
+* Usually, when Writers are used in the real world, they won't be labeled as such -- they'll be a type that looks like Writer but that uses concrete types.
+
+**The ListT you want isn't made from the List type**
+
+You generally don't want to use ListT either because
+* It's not very fast
+* You can use a streaming library like `pipes` or `conduit` to greater effect anyway.
+* The obvious implementation of ListT doesn't pass the associativity law.
+
+#### Recovering an ordinary type from a transformer
+
+You can use the Identity monad to extract the primary monad from a transformer.
+
+```
+> runMaybeT $ (+1) <$> MaybeT (Identity (Just 1))
+```
+
+**Yeah, but why?**
+
+Certain things, like Reader, don't exist as a datatype on their own in the wild. There's only ReaderT. In cases like these, you might want to use ReaderT Identity so you can have a plain Reader rather than a ReaderT (if you need it). You don't need to do this for transformers wrapping types that already exist on their own, like Maybe.
+
+**The transformers library**
+
+* Don't write your own transformers for existing types. Use pre-built ones available in `base` or `transformers`.
+* `ExceptT`, available in `transformers`, is the same as `EitherT`, available in `either`. Prefer the former, because `transformers` comes with your GHC install.
+
+#### Lexically inner is structurally outer
+
+* The `m` in monad transformers always wraps our _value_, i.e.,  what we can _have_, not necessarily things we need (as in the case of ReaderT).
+
+When we say "lexically inner is structurally outer", we mean that in monad transformers, when you remove a layer, that layer's underlying monad will wrap the innermost value. For example, if we have a type 
+
+```
+embedded :: MaybeT (ExceptT String (ReaderT () IO))
+embedded = return 1
+```
+
+then when we remove the `MaybeT` layer, the value gets wrapped in `Just` (of type `Maybe`):
+```
+maybeUnwrap :: ExceptT String (ReaderT () IO) (Maybe Int)
+maybeUnwrap = runMaybeT embedded
+```
+
+See? The structurally outermost monad is lexically the innermost monad.
+
+* The "base monad" in a transformer stack is the one that is _structurally_ outermost. in `type MyType a = IO [Maybe a]`, the base monad is IO.
+
+**Exercise: Wrap It Up (p.1026)**
+
+See `chapter26/src/WrapItUp.hs`
+
+**Stopping point: p.1027**
+
+#### MonadTrans
+
+In order to manage monad transformer stacks, we need to be able to lift more than `fmap` allows.
+
+**The typeclass that lifts**
+
+`MonadTrans` is a typeclass with one operation: `lift`. This function lifts a monadic action over a transformer. Here's the definition:
+
+```
+class MonadTrans t where
+lift :: (Monad m) => m a -> t m a
+```
+
+**Motivating MonadTrans**
+
+It's possible for a MonadTrans instance to lift an action into a deeply nested monad transformer stack. Check out `ActionT`'s (`ActionT` from scotty) instance for `MonadTrans`:
+
+```
+instance MonadTrans (ActionT e) where
+lift = ActionT . lift . lift . lift
+```
+
+Since `ActionT` contains ExceptT, ReaderT, and StateT, it uses their respective `lift` methods in order to lift whatever value you gave all the way to the "bottom" of the transformer stack.
+
+**Lifting** means you're embedding an expression into a larger context by adding structure that doesn't do anything.
+
+**MonadTrans instances**
+
+In general, MonadTrans instances lift "the injection of the known structure (with MaybeT, the known structure is Maybe) over some Monad". Here's an example:
+
+```
+> lift [5] :: MaybeT [] Int
+MaybeT [Just 5]
+```
+
+Notice how the `Maybe` structure is "injected" inside the monad that we lifted over the transformer?
+
+**Stopping point: p.1037 ("Here's a summary...")**
+
+**Exercises: Lift More**
+
+Do you even lift, bro.
+
+1. See `chapter26/src/EitherTInstances.hs`. (I put it in here because it just makes sense, and it allows us to avoid orphan instances.)
+2. See `chapter26/src/LiftMore.hs`
+
+**Prolific lifting is the failure mode**
+
+wtf?
+
+**Wrap it, smack it, pre-lift it**
+
+A good way to avoid spaghetti code when writing monad transformers is to wrap your transformer stack in a newtype and abstract away the representation. Then you can expose an API that operates upon the underlying representation under the hood without the API consumer having to worry or think about it. Scotty is a good example of this:
+
+`type ActionM = Web.Scotty.Internal.Types.ActionT Text IO`
+
+Note a couple things here:
+* The interface for ActionM is simple and hides away a lot of the details of the implementation.
+* You can access the ActionT type by importing an internal module if you do happen to need access to the internal representation.
+
+Another nice thing about this approach is that you can write a MonadTrans instance for your custom type (in this case, ActionT) which allows consumers to use `lift` just once to lift whatever they need into your monad stack context.
+
+#### MonadIO aka zoom-zoom
+
+There's also a `MonadIO` class which you can use to lift an IO action into another monad. The cool thing about this is that it essentially allows you to perform an IO action within the context of whatever monad transformer stack you're currently working in.
+
+Here's the class:
+
+```
+class (Monad m) => MonadIO m where
+liftIO :: IO a -> m a
+```
+
+See the type of `liftIO`? That's what allows you to embed IO actions inside arbitrary monads.
+
+**Example MonadIO instances**
+
+**Stopping point: p.1043**
+
+**Exercises: Some Instances (p.1043)**
+
+See `chapter26/src/SomeInstances.hs`
+
+#### Monad transformers in use
+
+**MaybeT in use**
+
+**Temporary extension of structure**
+
+**Stopping point: p.1046**
+
+**ExceptT aka EitherT in use**
+
+**Scotty, again**
+
+**Slightly more advanced code**
+
+??? 
+
+#### Monads do not commute
+
+* Monads do not commute, so when you're using monad transformers, you still have to think about what you're doing. Be careful! Not every combination of types will make sense.
+
+**Hypothetical Exercise**
+
+No, they're not the same. `ReaderT r Maybe` seems to make some sense, but I don't know what the hell is going on with `MaybeT (Reader r)`.
+
+#### Transform if you want to
+
+* If you don't like em, don't use monad transformers! Write your code in the easiest way first, then if it makes sense, you can use a monad transformer to clean it up. Being happy and productive is better than being fancy.
+* Iterate. Write the "simplest" (for you) version of the code the first time around, then come back and refactor it to be more concise, clearer, whatever.
+* Monad transformers are not something you _must_ use, but you should be familiar with them so you can read library code and other real-world Haskell code.
+
+#### Chapter 26 Exercises
+
+**Write the code**
+
+See `chapter26/src/WriteTheCode.hs`
+
+**Fix the code**
+
+See `chapter26/src/FixTheCode.hs`
+
+**Hit counter**
+
+All right, see `chapter26/app/Main.hs`
+
+**Morra**
+
+See `chapter26/src/Morra.hs`
+
+Not doing number 3, the description doesn't really make sense in the context of Morra (pick 1, 2, 2? What do you mean, is that their guesses or their throws?)
+
+**Chapter 26 definitions**
+
+* A **memory leak** is a part of a program that consumes memory in a way that makes it unusable or irrecoverable.
+
+### Chapter 27: Nonstrictness
+
+#### Laziness
+
+* Haskell has _nonstrict_ (not "lazy") evaluation semantics. You will hear it called both lazy and nonstrict, though.
+
+#### Observational Bottom Theory
+
+* Nonstrictness allows us to have values with bottom in them that are perfectly valid until bottom is forced to be evaluated.
+
+**Standards and obligations**
+
+* _Truly_ lazy languages memoize the results of every computation performed. Sounds good in theory, but it uses a ridiculous amount of memory so it is not practical. Haskell is only a _nonstrict_ language.
+
+
+The main idea behind nonstrictness is that you can have an expression which yields a value, even if bottom or infinite data resides within the expression. Here's an example:
+
+```
+> fst (1, undefined)
+1
+```
+
+See how you can get a value even when bottom is present?
+
+#### Outside in, inside out
+
+* **Strict** languages evaluate _inside out_, e.g., from the innermost expression to the outermost expression.
+* **Nonstrict** languages evaluate _outside in_, e.g., from the outermost expression to the innermost expression, based on what values are forced.
+
+Check out this expression:
+
+```
+foldr const 'z' ['a'..'e']
+```
+
+This will produce the value `'a'` because `const` only evaluates its first argument. Since the rest of the fold is contained in the second argument, the rest of the fold never happens.
+
+#### What does the other way look like?
+
+* In strict languages, you generally cannot bind a computation to a name without evaluating it to the point where you can construct it.
+
+```
+hypo :: IO ()
+hypo = do
+let x :: Int
+x = undefined
+s <- getLine
+case s of
+"hi" -> print x
+_    -> putStrLn "hello"
+```
+
+The binding for `hypo` could not be constructed in a strict language, because it would try to force `x` when it was binding it and that would throw an exception, since `x` is bottom. In Haskell, we can construct this function, and we only get into trouble if we try to force evaluation of `x` (in this case, if we enter "hi" at the prompt).
+
+* Evaluation in nonstrict languages is driven by **demand**, not **construction**.
+
+**Stopping point: p.1067 ("Can we make Haskell strict?")**
+
+#### Can we make Haskell strict?
+
+* case expressions generally force evaluation
+
+**seq and ye shall find**
+
+The `seq` function has the following type:
+
+```
+seq :: a -> b -> b
+```
+
+In Haskell, we can't guarantee that something will be evaluated, **period**. The `seq` function simply returns bottom if bottom is given as the first argument. In general, if we want something to be evaluated, we have to create a link between nodes in the graph of expressions so that one forced expression will lead to another expression being forced.
+
+**seq and weak head normal form**
+
+* An expression in **normal form** has been fully evaluated.
+* **Weak head normal form (WHNF)** means that something has been evaluated to the first data constructor or lambda. For example: `(1 + 2, 3 + 4)` is in WHNF, but `1 + 2` is not, because the outermost part is function application. Evaluation stops at the first _head_ (remember heads in the lambda calculus?).
+* `seq` evaluates an expression to WHNF.
+
+**Case matching also chains evaluation**
+
+Case matching in things like case expressions and pattern matching forces evaluation up to the point necessary to determine if a given value matches a given case. For example:
+
+```
+data Something = Something (Maybe Int)
+
+isAThing :: Something -> Bool
+isAThing (Something _) = True
+
+isARealThing :: Something -> Bool
+isARealThing (Something (Just _)) = True
+isARealThing (Something Nothing) = False
+```
+
+If we pass `Something undefined` to `isAThing`, it won't bottom out, because only the outermost data constructor is evaluated. If we pass the same value to `isARealThing`, it _will_ bottom out because the inner constructor is forced as well.
+
+**Core Dump**
+
+* **GHC Core** is the language GHC Haskell gets translated to before being compiled to machine code. See here: https://ghc.haskell.org/trac/ghc/wiki/Commentary/Compiler/CoreSynType.
+* You can determine what's being evaluated by inspecting Core for a given program.
+* To get the core dump of a program in GHCi, use the following command then load the file in the normal way: `:set -ddump-simpl`. You can also `:set -dsuppress-all` to clean the output up a little and make it more readable.
+
+**Stopping point: p.1075**
+
+* Core shows evaluated case matching, so you can look at it to tell how much of your expression has been forced to evaluate.
+
+**A Core difference**
+
+Case expressions are always strict to WHNF in Core. That means that if you write a pattern in Haskell that never evaluates, Core will just drop it. Here's an example:
+
+Haskell:  
+`case undefined of { _ -> False }`
+
+Core:  
+`False`
+
+Notice that the following expression in Core WILL bottom out:  
+`case undefined of { DEFAULT -> False }`
+
+Core forces evaluation of cases, even if they're not used anywhere.
+
+**A little bit stricter now**
+
+* In Haskell, **an expression will not be evaluated until it is forced to do so.** Period. You can't reproduce the behavior of a strict language like Java because Haskell doesn't work like that.
+
+**Exercises: Evaluate**
+
+1. `const 1 undefined` = `(\a _ -> a) 1 undefined` = `1`
+2. `const undefined 1` = `(\a _ -> a) undefined 1` = `\undefined _ -> undefined` = `undefined`
+3. `flip const undefined 1` = `(\_ a -> a) undefined 1` = `\_ 1 -> 1` = `1`
+4. `flip const 1 undefined` = `(\_ a -> a) 1 undefined` = `\_ undefined -> undefined` = `undefined`
+5. `const undefined undefined` = `undefined`
+6. `foldr const 'z' ['a'..'e']` = `const 'a' (foldr const 'z' ['b'..'e'])` = `'a'`
+7. `foldr (flip const) 'z' ['a'..'e']` = `(\_ a -> a) 'a' (foldr (\_ a -> a) 'z' ['b'..'e'])` = ... = `'z'`
+
+#### Call by name, call by need
+
+There are three different evaluation strategies:
+* **Call by _value_**: Arguments to functions are fully evaluated before use. This is inside-out, strict evaluation.
+* **Call by _name_**: Arguments to functions do not have to be evaluated before the function is executed. This is outside-in, nonstrict evaluation.
+* **Call by _need_**: Same as call by value, except that all evaluated expressions are memoized. GHC Haskell only memoizes specific things, usually named expressions which aren't lambdas with parameters. Other implementations of Haskell may do something else.
+
+#### Nonstrict evaluation changes what we can do
+
+In nonstrict languages like Haskell, you can work with infinite lists, or lists with bottom, or any number of other things that rely on the fact that not everything is evaluated at once.
+
+The following expressions work in Haskell, but wouldn't work in strict languages: 
+* `[1..]`
+* `init [1, 2, undefined]`
+* `length [undefined, undefined, undefined]`
+
+The expression `head $ sort [1, 2, 3, undefined]` will throw an error, because `sort` must inspect every element of the list in order to sort it.
+
+#### Thunk life
+
+* A **thunk** is an unevaluated computation that may result in a value once it is evaluated.
+
+**Not all values get thunked**
+
+* We can use the `sprint` command in GHCi to see what parts of an expression have already been evaluated. Remember, though -- it has some quirky behavior.
+* GHC does **not** thunk data constructors because they are "constant", which... I'm not exactly sure what that means in this context. But anyway, apparently data constructors are safe to eagerly evaluate.
+
+**But aren't data constructors functions?**
+
+* Data constructors are like functions when _unapplied_, otherwise they're constants when fully applied. That's why sprinting the list `list = [1 :: Int, 2 :: Int]` yields `[1,2]` -- because all the data constructors are applied.
+* A more polymorphic list, like one with the type `Num a => [t]` will result in `_` (an unevaluated thunk) when `:sprint`'d. That's because this type isn't concrete, so there aren't concrete data constructors being used; there's actually function `Num a -> a` awaiting application.
+* Expressions which are not in WHNF will be thunked.
+
+#### Sharing is caring
+
+* Sharing, in this context, means sharing the evaluated value of a named computation.
+* Sharing is important due to memory constraints.
+* GHC alternates between call-by-name and call-by-need depending on what it thinks will produce faster code. It can do this because it knows what code produces side effects and what code doesn't.
+
+**Using trace to observe sharing**
+
+* We can use the `Debug.Trace` module from `base` to debug code and observe the order of evaluation in our program.
+* "The `trace` function outputs the trace message given as its first argument, before returning the second argument as its result." (http://hackage.haskell.org/package/base-4.11.1.0/docs/Debug-Trace.html).
+* DO NOT USE THE `Debug.Trace` MODULE IN PRODUCTION CODE.
+
+**Stopping point: p.1085**
+
+**What promotes sharing**
+
+* A good way to get GHC to share something is to give it a name. For example, if you have `x = 5 :: Int` and do `x + x`, `x` will only be evaluated once. If you had `x = 5 :: Int` and `y = 5 :: Int`, both of them would be evaluated, even though their value is the same.
+* Sometimes, this mechanism doesn't behave like you would expect. String literals, for example, don't get evaluated the same as lists of characters, even though they're the same from our point of view.
+
+**What subverts of prevents sharing**
+
+* You can inline expressions to prevent sharing. You can also wrap values in lambdas to prevent sharing.
+* The results of functions with explicit, named arguments do not get shared. Point-free function results generally DO get shared.
+* Typeclass constraints prevent sharing, because they are represented as a function in Core, and WHNF doesn't evaluate functions.
+* Implicit parameters prevent functions from being shared as well.
+
+**Why polymorphic values never seem to get forced**
+
+To reiterate, **typeclass constraints are represented as functions** in Core. Therefore, polymorphic values don't get shared! Check this out:
+
+```
+> poly = 1
+> conc = poly :: Int
+> poly
+1
+> conc
+1
+> :sprint poly
+poly = _
+> :sprint conc
+conc = 1
+```
+
+`poly` actually compiles down to a lambda in Core because of the typeclass constraint.
+
+**Stopping point: p.1095 ("Preventing sharing on purpose")**
+
+**Preventing sharing on purpose**
+
+* It's a good idea to prevent sharing when we have a large datum that could take up a lot of memory and is only used for some trivial calculation.
+* We can prevent sharing by wrapping our term in a lambda tha references its argument somehow (even if it just ignores it with `_`).
+* Point-free lambdas _can_ get shared, so be careful.
+
+**Forcing sharing**
+
+* You can force an expression to be shared by naming it. A common way of doing this is with `let`.
+
+#### Refutable and irrefutable patterns
+
+There are two types of patterns in pattern matching:
+* **Irrefutable** patterns will _always_ match
+* **Refutable** patterns might _not_ match
+
+Take note:
+
+```
+refutable :: Bool -> Bool
+refutable True  = False
+refutable False = True
+```
+
+Notice that the patterns _themselves_ are refutable or not, not the function as a whole. 
+
+```
+irrefutable :: Bool -> Bool
+irrefutable _ = True
+```
+
+Remember, of course, that if an irrefutable pattern comes before a refutable pattern, the refutable pattern will never be matched.
+
+**Lazy patterns**
+
+Lazy patterns look like this:
+
+```
+lazyPattern :: (a, b) -> String
+lazyPattern ~(a,b) = const "Cousin It" a
+```
+
+Lazy patterns are irrefutable! Check it out:
+
+```
+> lazyPattern undefined
+"Cousin It"
+```
+
+Crazy, right? Lazy patterns don't force evaluation on pattern matches. The default behavior for pattern matches is to force evaluation of matches to make memory usage and performance more predictable.
+
+#### Bang patterns
+
+Bang patterns can be used with the `{-# LANGUAGE BangPatterns #-}` pragma. They allow you to force evaluation of specific variables. It's basically more convenient syntax than using `seq` everywhere. Check out an example:
+
+```
+bangin :: Bool -> Int
+bangin !b = 1
+```
+
+`b` will be evaluated regardless of the fact that it's not used. Therefore, if you pass `undefined`, you're gonna have a bad time. 
+
+Note that you can also write the above function like this:
+
+```
+bangin :: Bool -> Int
+bangin !_ = 1
+```
+
+and the end result is the same.
+
+**Bang patterns in data**
+
+You can also force evaluation of data constructors. Here's an example:
+
+```
+data Foo = Foo Int !Int
+```
+
+This means that if you pattern match on `Foo`, the second Int param can never be undefined because it is forced.
+
+The general idea is that there are cases where it's cheaper to just force evaluation than to create a bunch of thunks. This is particularly true for numeric code dealing with stuff like Ints and Doubles... it's cheaper and easier to create a primitive value than a thunk wrapping it.
+
+Here's a rule of thumb: **Lazy in the spine, strict in the leaves**.
+
+#### Strict and StrictData
+
+For versions of GHC prior to `8.0`, the `Strict` and `StrictData` extensions are a means of forcing all functions and data constructors in a module, respectively, to be strict. You can still escape this strictness with the `~` operator.
+
+**Stopping point: p.1104 ("Adding strictness")**
+
+#### Chapter 27 Exercises
+
+**Strict List**
+
+See `chapter27/src/StrictList.hs`
+
+* The `Strict` and `StrictData` language pragmas can be used to force strictness for all functions and bindings and all data constructors, respectively, in a module. See https://ghc.haskell.org/trac/ghc/wiki/StrictPragma.
+
+**What will :sprint output?**
+
+1. (x = ) `_` ✓
+2. `x = ['1']` ✓ -ish, :sprint outputted `x = "1"`
+3. `x = [_]` X - :sprint outputted `x = _`
+4. `x = 1` ✓
+5. `f = _`; `x = _` ✓
+6. `f = _`; `x = _` ✓
+
+**Will printing this expression result in bottom?**
+
+1. No ✓
+2. Yes ✓
+3. Yes ✓
+4. No ✓
+5. No ✓
+6. Yes X - No, I guess because `const` ignores its second argument completely
+7. Yes ✓
+
+**Make the expression bottom**
+
+Number 1:
+
+```
+x = undefined
+y = "blah"
+main = do
+print (undefined `seq` snd (x, y))
+```
+
+### Chapter 28: Basic libraries
+
+#### Basic libraries and data structures
+
+* Data structures are important. Making the right choice about what data structure to use can mean the difference between a fast program and a slow program (obviously).
+* This chapter will show us some tools for making good decisions about which data structure(s) to use in our program(s).
+
+**Stopping point: p.1113 ("Benchmarking with Criterion")**
+
+#### Benchmarking with Criterion
+
+See `chapter28/app/Main.hs` for example code for this section.
+
+* You can use the library `criterion` to benchmark program performance.
+* When you compile code for benchmarking, use the `-O` or `-O2` build flags in GHC. Example: `stack ghc -- -02 bench.hs`
+* The `whnf` function from criterion will measure the time it takes to evaluate your expression to WHNF
+* The `nf` function will measure the time it takes to fully evaluate the expression.
+* Using primitives like `Int` over `Integer` where you can will improve the performance of your program dramatically.
+
+**More on whnf and nf**
+
+* Using `whnf` is useful when all the work that you're interested in happens before any data constructors are used. For example, if you're reading data out of a database and converting it into some datatype, you might care only about how long it takes to read the data, not how long it takes to build the datatype.
+* Using `nf` is useful when you want to know how long it to do everything -- for example, reading the data and _also_ encoding it into a datatype.
+
+**Stopping point: p.1121 ("Let us consider an example with a few changes:")**
+
+* Most of the time, `whnf` is going to cover whatever you want to benchmark.
+
+**Making the case for nf**
+
+* **Guarded recursion** occurs when the recursive call is wrapped in a data constructor. Guarded recursion allows for lazy consumption of the results of the recursive function.
+* Using `whnf` for guarded-recursive functions won't give you accurate benchmarks because it only evaluates up to the first data constructor, which means that the subsequent recursive calls won't be evaluated. https://wiki.haskell.org/Tail_recursion
+* You can use `nf` to benchmark guarded-recursive functions and other things where you need to evaluate beyond the first data constructor. But be careful! Improper use can easily lead to erroneous benchmarks.
+
+#### Profiling your programs
+
+* The GHC user guide has some good tips on profiling: https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/profiling.html.
+
+**Profiling time usage**
+
+* Profiling is useful for determining what parts of your program are slow and what parts are fast.
+* You can use the `-prof` GHC flag to enable profiling. Using this flag alone, you still have to annotate cost centers in your code for GHC to profile.
+* The `-fprof-auto` GHC flag assigns all bindings that aren't already annotated a cost center named after the binding. Good for small things, but for performance-sensitive code, you should mark your cost centers manually.
+* SCC = cost center.
+* `-rtsopts` allows you to pass "RTS options to the generated binary". RTS stands for Runtime System.
+* `-O2` enables the highest level of optimizations for program compilation.
+
+**Profiling heap usage**
+
+You can profile memory usage using the `-hc` and `-p` flags. Some RTS thing. I dunno. Google it.
+
+**Stopping point: 1128 ("Constant applicative forms")**
+
+#### Constant applicative forms
+
+* **Constant applicative forms** (CAFs) are expressions with no free variables that are held in memory and shared with all other expressions in a module.
+
+CAFs can be any of the following things:
+* values
+* partially applied functions without _named_ arguments
+* fully applied functions, though this is rare in real code
+
+* If you find your program consuming an outrageous amount of memory, look for a big CAF and kill it.
+* You can kill CAFs by wrapping them in functions with named arguments.
+* A function can become a CAF if you make it pointfree, so be vewy careful.
+
+#### Map
+
+The _containers_ library offers many common data structures for your consumption. http://hackage.haskell.org/package/containers
+
+**What's something that's faster with Map?**
+
+Maps have fast insertion and lookup times compared to association lists (lists of type [(a, b)]).
+
+**What's slower with Map?**
+
+If you're using an `Int` value as your key for a Map, it's a good sign you'd be better off with something like a HashMap, IntMap, or Vector.
+
+#### Set
+
+`Set` is a unique, ordered set of values. Note that both Map and Set keep their keys in order by enforcing `Ord` constraints on their API functions.
+
+**Exercise: Benchmark Practice**
+
+See `chapter28/app/Main` and `chapter28/app/BenchmarkPractice`.
+
+**Stopping point: p.1136 ("Sequence")**
+
+#### Sequence
+
+Sequences allow for cheap appending and preprending, unlike lists, which only allow for the former.
+
+**What's faster with Sequence?**
+
+As we said, appending and prepending. You shouldn't default to using Sequences, though, unless you need inexpensive access to the end of a list.
+
+It's also faster to traverse and index a sequence than a list.
+
+**What's slower with Sequence?**
+
+* Memory density isn't as good as with Vectors.
+* Lists _can_ be faster with consing and concatenation, but only in certain cases, like if the lists are small.
+
+#### Vector
+
+* Vectors are available from the `vector` library.
+* "Vectors are efficient arrays."
+* If you think you want an array, you probably want a vector.
+* **Boxed** means a type can reference any other type you want.
+* **Unboxed** means a raw value, not a pointer reference.
+
+**When does one want a Vector in Haskell?**
+
+* You need maximal memory efficiency.
+* You will be accessing your data exclusively by indexing with an Int value.
+* You want uniform access times for every element in the structure.
+* You will make one vector and read it many times, OR make a mutable Vector for efficient updates.
+
+**What's this about slicing?**
+
+* **Slicing** means cutting off a portion of a Vector/Array so you end up with a sub-vector/array.
+* Vectors can slice efficiently because they don't touch the underlying array; they simply update their indices.
+
+**Updating vectors**
+
+* Loop fusion is the concept of combining multiple sequential operations into one single larger operation. An example is combining four separate `map` calls into one `map` call with composed functions.
+* Check out GHC RULES. https://wiki.haskell.org/GHC/Using_rules
+* You can batch update vectors with the `//` operator. This is far more efficient than updating a single element at a time. Furthermore, you can use `unsafeUpdate` to batch update from a _vector of updates_ to get even more speed.
+
+**Mutable Vectors**
+
+* Mutably updating vectors is about 7000 times faster than updating them immutably in an unbatched loop. The biggest time savings, however, comes from not doing something foolish like unbatched updates.
+
+**A sidebar on the ST Monad**
+
+* The `ST` monad allows us to safely mutate some variable in-place without worrying unintended side effects.
+* `ST` is like a mutable version of the `State` monad.
+* Avoid entering and exiting `ST` over and over. It's better to use `IO` and/or batched mutation instead.
+
+**Stopping point: p.1148**
+
+**Exercises: Vector (p.1148)**
+
+See `chapter28/app/VectorBenchmark.hs` and `Main.hs`.
+
+uhh... if I try to profile the benchmark, it seems to run indefinitely. what??
+
+Check it out. You can build your package for profiling with Stack: https://stackoverflow.com/questions/32123475/profiling-builds-with-stack
+
+#### String types
+
+**String**
+
+Since Strings are lists, they can be infinite. Large strings can use a great deal of memory, and of course, character indexing in the string is slow because you have to traverse n items to get to the nth item.
+
+**Text**
+
+This is the `text` package on Hackage. `Text` is a useful replacement for `String` when you have plain text that you need to store efficiently, in a way that doesn't gobble up all your memory. It also has fast indexing.
+
+However, Text is encoded in UTF-16.
+
+**Don't trust your gut, measure**
+
+* Reading files with `Data.Text.IO` takes up a lot of memory because it reads in the entire file instead of lazily reading in only as much as it needs.
+* Streaming is the best way to incrementally read data.
+* Streaming is not covered in this book. :(
+
+**ByteString**
+
+* ByteStrings are sequences of bytes represented as a vector of Word8 values.
+* ByteStrings are not _necessarily_ text, though they can represent it and be used with OverloadedStrings.
+
+**ByteString examples**
+
+**Stopping point: p.1152 ("ByteString traps")**
+
+* Don't use the `Char8` module to convert a string to a bytestring.
+* GHC Haskell allows UTF8 in source files.
+* Use `utf8-string` or `Data.Text.Encoding` to convert strings to bytestrings safely.
+
+**Char8 is bad mmmmmmkay**
+
+You should not use the `Char8` module for converting _any_ kind of string to unicode! The `pack` function included is strictly for ASCII data only.
+
+**When would I use ByteString instead of Text for textual data?**
+
+Sometimes you want to keep UTF-8 encoded data in its original form to avoid the overhead of switching back and forth between ByteString and Text. If you do this, you will probably wanna make a newtype so that you don't accidentally mix UTF-8 data with non-UTF-8 data.
+
+#### Chapter Exercises
+
+**Difference List**
+
+See `chapter28/src/DifferenceList.hs`.
+
+Difference lists are useful list-like data structures that allow for constant appending and concatenation. I've implemented the structure in the file above, but I still don't understand why they give such performance advantages, but the benchmark doesn't lie. Something about avoiding nested appension: https://wiki.haskell.org/Difference_list.
+
+**A simple queue**
+
+See `chapter28/src/Queue.hs`.
+
+### Chapter 29: IO
+
+#### IO
+
+* "IO is ... a special kind of datatype that disallows sharing in some cases."
+
+#### Where IO explanations go astray
+
+**Burn the State to the ground!**
+
+* The `#` symbol next to a type means it's a primitive type that cannot be defined in Haskell itself. Such types are exported by GHC.Prim.
+* Defining IO as State is an unfortunate practice because you can't meaningful interact with the underlying State in any way.
+
+#### The reason we need this type
+
+* The IO type disables most performance optimizations that GHC normally applies, like sharing, inlining, reordering of operations, etc. This is its primary function.
+
+**What?**
+
+Yep.
+
+**Order and chaos**
+
+* IO uses nested lambdas to ensure preservation of order.
+
+**Stopping point: p.1165**
+
+#### Sharing
+
+When working with the IO type, you're not guaranteed anything. A value of type `IO a` are _descriptions of how you might GET an `a`_ from the real world.
+
+With this in mind, sharing doesn't make sense. We don't have values, only recipes, so what would we share?
+
+**The time has come**
+
+If IO didn't prevent sharing, then things like getting the current time wouldn't work properly, because you'd get the time once and then it'd be shared.
+
+**Another example**
+
+The criterion library provides special benchmarking functions for IO: `whnfIO` and `nfIO`. Note that these, unlike their standard parallels, don't require function arguments, because IO is never shared.
+
+**The code! It doesn't work!**
+
+`IO String` does NOT mean you have a string! It means you have a _means of getting a string_. It'll never be the _same_ string, even if the individual characters match, because IO isn't shared!
+
+#### IO doesn't disable sharing for everything
+
+* IO only prevents sharing of the terminal value it reduces to (for example, `a` in `IO a`).
+* Values produced _within_ an IO action that don't _rely_ on IO still can be shared. For example, if you have `x = 1 + 1`, that can be shared, regardless of whether it's inside an IO action such as `main`.
+* It wouldn't make sense for it to be any other way -- every Haskell program requires a `main :: IO ()` action so if IO prevented _all_ sharing, well, then...
+
+#### Purity is losing meaning
+
+**Semantically, pedantically accurate**
+
+* "Pure" and "purely functional" mean that a language is based entirely on the lambda calculus, with no exceptions. In this sense, Haskell is pure.
+* Lambda calculus allows us to maintain referential transparency.
+
+**Referential transparency**
+
+An expression is **referentially transparent** if it can be replaced with its value without changing the behavior of a program.
+
+* IO functions are still referentially transparent because, given the same arguments, they return the same "recipe" every time. The recipe may produce different values, but it's the same recipe every time.
+
+"**As far as haskell is concerned, it's a language for evaluating expressions and constructing IO actions that get executed by `main` at some point later**."
+
+^ _nice_.
+
+**Stopping point: p.1172 (IO's Functor, Applicative, and Monad)**
+
+#### IO's Functor, Applicative, and Monad
+
+**The IO Functor**
+
+Here's an example:
+
+`fmap (+1) (randomIO :: IO Int)`
+
+So you see, `fmap` does not affect the effects that will happen. It merely lifts a transformation over them so that we can produce a new value from the original value created via side effects.
+
+**Applicative and IO**
+
+`(++) <$> getLine <*> getLine`
+
+If you were to type in `hello` and `jamie`, this would produce `IO "hellojamie"`. Notice how the order is preserved?
+
+**Monad and IO**
+
+* `pure` and `return` are an effect-free way of embedding a value in a "recipe-creating environment."
+* When you have nested IO actions, the outer actions can affect the result produced by the inner actions.
+* Nesting allows us to express order dependence in the IO monad.
+
+**Monadic associativity**
+
+Monad's bind is associative, even for IO. This holds because when we use bind with IO, we're not _executing_ the actions, we're simply building them up. The actions only get executed when we call `main`.
+
+#### Well, then, how do we MVar?
+
+* There is a function from `System.IO.Unsafe` called `unsafePerformIO` with the type `IO a -> a`. Using it is a bad idea.
+
+**Stopping point: p.1178 ("Chapter Exercises")**
+
+#### Chapter 29 Exercises
+
+**File I/O with Vigenere**
+
+See `vigenere-io`.
+
+**Add timeouts to your utility**
+
+See `vigenere-io`.
+
+**Config directories**
+
+See `ini-io`.
+
+### Chapter 30: When things go wrong
+
+#### Exceptions
+
+* An **exception** is a condition that interrupts the expected execution of a program.
+
+#### The Exception class and methods
+
+* Exceptions must have an instance of the `Exception` typeclass.
+* The `Typeable` class defines methods of identifying types at runtime.
+
+**But there is something different going on here**
+
+**A brief introduction to existential quantification**
+
+The `SomeException` type is a sort of parent type for all other exception types.
+
+* Make note: Generalized algebraic datatypes (GADTs).
+
+```
+data SomeException =
+forall e . Exception e => SomeException e
+```
+
+This is an example of existential quantification. Usually the `forall` would indicate universal quantification, except that the `e` is limited to the data constructor, which means that any type that implements the Exception class can be the `e` which can be subsumed under the `SomeException` type.
+
+Notice type variables such as `a` in `data MyType a = Something a` are universally quantified, meaning they can be anything. We existentially quantify when we want to narrow down what the variable can be.
+
+**So, wait, what?**
+
+**Typeable**
+
+Typeable allows us to check types at runtime. Ordinarily, this is unwise, but makes sense for exceptions.
+
+An important method is `cast`:
+
+```
+cast :: (Typeable a, Typeable b) => a -> Maybe b
+```
+
+This function is called by `fromException`, which is in turn called by `catch`. It's used to check what type of exception was thrown so that the appropriate `catch` can be called. If no `catch`es are found, your program will die.
+
+#### This machine kills programs
+
+**Exceptions may only be caught/handled in IO**. Pure code may cause exceptions, but they only appear when executed by an IO action, so remember... IO is where exceptions can be handled.
+
+**Catch me if you can**
+
+Here's the type of the `catch` function:
+
+```
+catch :: Exception e => IO a -> (e -> IO a) -> IO a
+```
+
+**Stopping point: p.1193 ("Want either? Try!")**
+
+#### Want either? Try!
+
+The `try` function can be used to attempt an IO operation and catch an exception it raises, wrapping the success/failure result in Either. Here's the type:
+
+```
+try :: Exception e => IO a -> IO (Either e a)
+```
+
+#### The unbearable imprecision of trying
+
+`try` will only catch the exception you tell it to catch. Therefore, if you want to catch _all_ exceptions, you must annotate it to catch `SomeException`.
+
+#### Why throwIO?
+
+The `throw` function allows exceptions to occur in pure code, so ... you should avoid using it as much as possible. It's used for stuff like `div`. `throwIO`, on the other hand, lets you throw arbitrary exceptions in IO.
+
+#### Making our own exception types
+
+`Exception` instances are derivable, so you can write something like this, assuming you have a datatype called `MyException`:
+
+```
+instance Exception MyException
+```
+
+That's it. Easy right?
+
+**Adding context**
+
+You can add context to your exceptions pretty simply, check it out:
+
+```
+data NotEven =
+NotEven Int
+deriving (Eq, Show)
+
+instance Exception NotEven
+```
+
+you can throw it like this:
+
+```
+throwIO (NotEven 5)
+```
+
+for example.
+
+**Catch one, catch all**
+
+The `catches` function can be used to catch multiple exceptions. Here's its type:
+
+```
+catches :: IO a -> [Handler a] -> IO a
+```
+
+The docs here give examples on how to use it: http://hackage.haskell.org/package/base-4.12.0.0/docs/Control-Exception.html#v:catches
+
+You can make a sum type to hold exceptions of the same "class", e.g.,
+
+```
+data EATD =
+NotEven Int
+| NotDivThree Int
+deriving (Eq, Show)
+
+instance Exception EATD
+```
+
+Then you just have to catch an `EATD` and you can pattern match on the data constructor.
+
+**Stopping point: p.1205 ("Surprising interaction with bottom")**
+
+#### Surprising interaction with bottom
+
+* Exception handling is **not** for catching bottoms.
+* Having caught `SomeException` and not re-throwing an error is no guarantee that your program won't still fail.
+* A bottom value may be forced before or after an exception handler.
+* Don't write partial programs!!!
+
+#### Asynchronous Exceptions
+
+**Asynchronous exceptions** are exceptions that are raised from a different thread than the one that receives the exception.
+
+You can protect your threads from asynchronous exceptions by using the `mask_` function from `Control.Exception`. It prevents exceptions from being thrown to a thread until a specific IO action is done.
+
+**Don't panic!**
+
+Async exceptions _are_ useful; other languages don't provide them because they don't know how to make them safe, but Haskell's like, WHAT SON.
+
+Don't try to catch everything; just let your program die and restart it with a process supervisor. (And don't forget to log exceptions!)
+
+LAST CHAPTER!!!

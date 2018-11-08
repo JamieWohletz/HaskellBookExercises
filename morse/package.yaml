@@ -1,10 +1,10 @@
-name:                chapter23
+name:                morse
 version:             0.1.0.0
-github:              "githubuser/chapter23"
+github:              "JamieWohletz/morse"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2018 Author name here"
+author:              "Jamie Wohletz"
+maintainer:          "reflectiveresistance@gmail.com"
+copyright:           "Copyright (c) Jamie Wohletz"
 
 extra-source-files:
 - README.md
@@ -17,18 +17,18 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/chapter23#readme>
+description:         Please see the README on GitHub at <https://github.com/JamieWohletz/morse#readme>
 
 dependencies:
 - base >= 4.7 && < 5
-- random
-- transformers
+- containers
+- QuickCheck
 
 library:
   source-dirs: src
 
 executables:
-  chapter23-exe:
+  morse-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -36,10 +36,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - chapter23
+    - morse
 
 tests:
-  chapter23-test:
+  morse-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -47,4 +47,4 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - chapter23
+    - morse
