@@ -6374,3 +6374,59 @@ Async exceptions _are_ useful; other languages don't provide them because they d
 Don't try to catch everything; just let your program die and restart it with a process supervisor. (And don't forget to log exceptions!)
 
 LAST CHAPTER!!!
+
+### Chapter 31: Final Project
+
+#### Final project
+
+* Finger daemons
+
+#### fingerd
+
+* The "finger" service was a means of figuring out how to contact people on the same network.
+* A "daemon" is a p rocess that runs in the background without direct user interaction.
+* The daemon is the backend of the protocol, and the finger program is the client, and it requests information from the daemon.
+
+**Caveat for the Windows users**
+
+#### Exploring finger
+
+* TCP is a protocol for sending messages back and forth. Messages can be raw bytes or text.
+* A _socket_ is an address where a message can be delivered.
+
+**Project overview**
+
+You can generate a simpler stack project with `stack new <project-name> simple`
+
+**fingerd.cabal**
+
+**src/Debug.hs**
+
+**Stopping point: p.1218**
+
+Note that when toying with multiple executables, if you want to run a particular one, you can do `stack exec <executable_name>`, where `<executable_name>` matches the name of the executable _as defined in the cabal file of your project_.
+
+Also note that finger clients by default connect to port 79 of a given host; hence why the debug server we wrote runs on port 79.
+
+#### Slightly modernized fingerd
+
+You can use the `RecordWildCards` language extension to make accessing fields in records a bit easier.
+
+**Creating the database**
+
+We're using SQLite, an embedded database, to store data in our application. (Specifically, it'll hold information on all the users we can report on.)
+
+**Before you continue**
+
+**Stopping point: p.1226**
+
+**Let your fingers do the walking**
+
+#### Chapter Exercises
+
+See `fingerd` for all source code.
+
+
+BOOM! DONE WITH THE BOOK!!!
+
+🎉🎉🎉🎉🎉
